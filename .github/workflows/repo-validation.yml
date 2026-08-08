@@ -1,0 +1,36 @@
+name: TS Skills Repo Validation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  validate:
+    name: Validate Skills Repo
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Scan skill issues
+        run: python3 scripts/scan_skill_issues.py --json
+
+      - name: Validate skill map
+        run: python3 skills/ts-expert/scripts/validate_skill_map.py
+
+      - name: Validate keyword routing
+        run: python3 skills/ts-expert/scripts/validate_keyword_routing.py
+
+      - name: Run tests
+        run: python3 -m pytest -q
