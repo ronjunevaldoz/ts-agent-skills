@@ -1,0 +1,80 @@
+{
+  "version": "0.1.0",
+  "skills": [
+    {
+      "name": "ts-api-layer",
+      "path": "skills/ts-api-layer",
+      "description": "The client/server contract shape decision for a TypeScript app \u2014 tRPC vs REST route handlers (Next.js `app/api/*/route.ts` or a separate Nest.js/Express backend). tRPC gives end-to-end type safety with zero codegen when client and server are both TypeScript in the same monorepo; REST is required the moment a non-TS client, a public API, or a versioned/OpenAPI contract enters the picture. Covers procedure design, Zod input validation, and the error-handling shape for both."
+    },
+    {
+      "name": "ts-auth",
+      "path": "skills/ts-auth",
+      "description": "Auth.js (formerly NextAuth) vs Clerk vs Lucia decision for a Next.js/TypeScript app, plus the session-vs-JWT tradeoff and real route-protection code. Getting this wrong means either shipping a managed auth bill you didn't need, or hand-rolling session logic a maintained library already solved. Covers middleware, Server Component, and Server Action/API route protection."
+    },
+    {
+      "name": "ts-ci-github-actions",
+      "path": "skills/ts-ci-github-actions",
+      "description": "GitHub Actions CI for a TypeScript/Next.js/Turborepo monorepo \u2014 lint, typecheck, test, and build jobs, per-package Turborepo remote caching, and pnpm frozen-lockfile installs. The direct analog of a Gradle CI matrix: without this, every other skill in this collection produces code nobody's checking. Assumes the pnpm workspace + Turborepo layout from ts-project-foundation."
+    },
+    {
+      "name": "ts-data-fetching",
+      "path": "skills/ts-data-fetching",
+      "description": "TanStack Query (React Query) as the client-side server-state layer \u2014 query keys, `useQuery`/`useMutation`, cache invalidation, and optimistic updates. This is the explicit companion to `ts-state-management`, which says fetched API data does NOT belong in Redux/Zustand/Context and routes it here instead. Covers why a dedicated server-state library beats hand-rolled `useEffect`/`useState` fetching, and how tRPC's built-in React Query integration (`ts-api-layer`) wraps this same layer automatically."
+    },
+    {
+      "name": "ts-deploy-vercel",
+      "path": "skills/ts-deploy-vercel",
+      "description": "Vercel deployment for a Next.js app \u2014 project config via vercel.json, environment variables scoped to Development/Preview/Production, automatic preview deployments per PR, and the Edge vs Node.js runtime choice per route. Covers the Turborepo monorepo case where only the affected app should rebuild, and the secret-leak risk of committing env files even to a private repo."
+    },
+    {
+      "name": "ts-expert",
+      "path": "skills/ts-expert",
+      "description": "TS Expert Orchestrator \u2014 maps every skill in this collection, their dependency order, and how to sequence them for a TypeScript/Next.js project. This is a meta-routing skill: it does not implement anything itself. Load it first for any non-trivial TypeScript/Next.js architecture task to get routed to the right skill \u2014 the skill map, dependency graph, decision trees, and the Skill Invocation Map below all exist to answer \"which skill do I use here?\" before any code gets written."
+    },
+    {
+      "name": "ts-forms",
+      "path": "skills/ts-forms",
+      "description": "React Hook Form + Zod resolver integration \u2014 uncontrolled inputs by default, field-level errors, submit gating while pending, and one Zod schema reused for both client validation and Server Action re-validation. The client check is UX; the server check on the same schema is the actual security boundary."
+    },
+    {
+      "name": "ts-nextjs-app-router",
+      "path": "skills/ts-nextjs-app-router",
+      "description": "Next.js App Router architecture contract \u2014 Server vs Client Component boundary, layouts and route groups, Server Actions, and middleware. The single most consequential architecture decision in a Next.js app: get the server/client boundary wrong and every feature built on top inherits the mistake."
+    },
+    {
+      "name": "ts-orm-database",
+      "path": "skills/ts-orm-database",
+      "description": "Prisma vs Drizzle decision, schema definition, and migrations for a TypeScript backend. Prisma is schema-first with its own DSL and the most mature migration tooling; Drizzle is TypeScript-first with no codegen step and a SQL-like query builder. Covers real schema and query code for both, plus the `prisma migrate` and `drizzle-kit` migration workflows."
+    },
+    {
+      "name": "ts-project-foundation",
+      "path": "skills/ts-project-foundation",
+      "description": "TypeScript project architecture contract for a Next.js/Node monorepo \u2014 tsconfig strict-mode baseline, ESLint flat config + Prettier, pnpm workspaces + Turborepo layout, and package boundary rules. This is the TS analog of a Gradle module graph: TS has no compiler-enforced module boundary, so the workspace layout and lint rules together *are* the architecture contract every other skill assumes."
+    },
+    {
+      "name": "ts-shadcn-ui",
+      "path": "skills/ts-shadcn-ui",
+      "description": "shadcn/ui component system, with Tailwind CSS as the underlying styling layer (not a separate skill). shadcn/ui isn't an npm package \u2014 the CLI copies component source into your own codebase, so you own and edit it directly. As of July 2026 shadcn/ui defaults new projects to Base UI (not Radix) as the headless primitive layer; Radix isn't deprecated and is still fully supported as an explicit choice, but Base UI \u2014 built by the same team, with a render-props API instead of `asChild` and more primitives (Combobox, Autocomplete, Number Field) \u2014 is now the default."
+    },
+    {
+      "name": "ts-state-management",
+      "path": "skills/ts-state-management",
+      "description": "Client-side React state management compared head-to-head \u2014 Redux Toolkit vs Zustand vs React Context, with a real decision tree instead of a single pick. Covers when each genuinely fits, migration cost between them, and testing implications. Also draws the line every team blurs: fetched API data is server state and belongs in TanStack Query (`ts-data-fetching`), not in any of these three."
+    },
+    {
+      "name": "ts-testing-playwright",
+      "path": "skills/ts-testing-playwright",
+      "description": "Playwright end-to-end testing \u2014 real browser, real navigation, a full user flow across multiple pages instead of one component in isolation. Covers locator best practices, the storageState auth fixture for reusing a logged-in session across tests, CI wiring against a production build, and toHaveScreenshot as a lightweight visual regression check. The e2e counterpart to ts-testing-vitest's unit/component layer, not a replacement for it."
+    },
+    {
+      "name": "ts-testing-vitest",
+      "path": "skills/ts-testing-vitest",
+      "description": "Vitest + React Testing Library for unit and component tests \u2014 native ESM, no transform-config fighting, esbuild-fast, and Vite config reuse when the project already runs Vite. Covers component tests via `render`/`screen`/`userEvent`, mocking with `vi.fn()`/`vi.mock()`, and testing custom hooks with `renderHook`. Testing philosophy: assert what the user sees and does, never internal state."
+    },
+    {
+      "name": "ts-validation-schema",
+      "path": "skills/ts-validation-schema",
+      "description": "Zod as the single runtime-validation backbone for the whole stack \u2014 schema-first types via `z.infer`, `.parse` vs `.safeParse`, and composing schemas with `.extend`/ `.pick`/`.omit`/`.merge`. Covers the three places one schema should be reused instead of reinvented: forms (paired with React Hook Form), API request/response boundaries, and environment variable validation at startup. Foundational \u2014 skip it and the forms, API, and env-config skills each reinvent validation inconsistently."
+    }
+  ]
+}
