@@ -372,6 +372,9 @@ SCAFFOLDED: <project name>
 NEXT STEPS:
   - <anything the user still needs to do manually — e.g. set real env vars,
     connect a real database, run the first migration>
+  - Theme is `new-york`/`neutral` by default — cheap to change, shadcn/ui copies
+    component source into the repo, so edit the CSS variable tokens directly or run
+    `npx shadcn add` for a different preset. Not a locked-in decision.
   - Run `pnpm turbo run lint typecheck test build` before the first PR
 ```
 
