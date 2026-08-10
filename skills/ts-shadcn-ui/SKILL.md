@@ -42,9 +42,12 @@ Use when you need to:
 `--background`, `--primary`, dark mode, headless components, copy-paste components.
 
 **Freshness rule:** the Base UI/Radix default is a fast-moving decision — shadcn/ui
-switched its default primitive layer once already (Radix → Base UI, mid-2026).
-Recheck shadcn/ui's own changelog (ui.shadcn.com) and the `components.json`
-`"style"`/registry output before assuming either library is still the default.
+switched its default primitive layer once already (Radix → Base UI, mid-2026), and
+the `init` CLI itself changed shape since then (named presets replacing a simple
+base-color prompt, confirmed live 2026-08-10 — see CLI Setup below). Recheck
+shadcn/ui's own changelog (ui.shadcn.com), run `npx shadcn@latest init --help`, and
+the real `components.json` output before assuming anything below still matches —
+this collection got burned once already by documenting an exact CLI flow that drifted.
 
 ---
 
@@ -68,32 +71,55 @@ requires it. Don't mix the two within one project — see Anti-Patterns.
 ## CLI Setup and components.json
 
 ```bash
-npx shadcn@latest init
+npx shadcn@latest init -t next -b base -p nova
 ```
 
-This asks for base color, whether to use CSS variables for theming (yes), and the
-primitive/style choice — accept Base UI unless you have a reason not to. It writes:
+**Verified live 2026-08-10 against the real current CLI — this has changed since
+this skill's last check.** `init` no longer asks a standalone "base color"
+question; it prompts for a **preset** (`nova`/`vega`/`maia`/`lyra`/`mira`/`luma`/
+`sera`/`rhea`, or `custom` for independent control over every choice), which
+bundles a color scheme, icon library, and menu style together. The primitive
+layer choice (`-b`) now has **three** options, not two: `base` (Base UI, the
+default), `radix`, and `aria` (React Aria Components) — accept `base` unless the
+project already has Radix/Aria components. Pass `-p <preset>` non-interactively;
+`nova` is the closest match to what this skill previously called the "new-york"
+default. It writes:
 
 ```jsonc
-// components.json
+// components.json — real output, not the pre-preset-era shape
 {
   "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "new-york",
+  "style": "base-nova",
   "rsc": true,
   "tsx": true,
   "tailwind": {
-    "config": "tailwind.config.ts",
+    "config": "",
     "css": "app/globals.css",
     "baseColor": "neutral",
-    "cssVariables": true
+    "cssVariables": true,
+    "prefix": ""
   },
+  "iconLibrary": "lucide",
+  "rtl": false,
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils",
-    "ui": "@/components/ui"
-  }
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "menuColor": "default",
+  "menuAccent": "subtle",
+  "registries": {}
 }
 ```
+
+`tailwind.baseColor` still exists (confirmed `"neutral"` under the `nova`
+preset) — a base-color *question* asked upstream of this skill (e.g.
+`ts-new-project`'s intake) still maps onto something real, just via preset
+selection now, not a standalone CLI flag. `style` is now the preset name
+(`base-nova`), not a fixed `"new-york"`/`"default"` pair — don't assume the old
+two-value enum still applies.
 
 Adding a component pulls its source plus any primitive dependency it needs:
 
@@ -292,3 +318,4 @@ definition above works in both themes without a single `dark:` variant — toggl
 | Date | Change |
 |---|---|
 | 2026-08-08 | Initial version. |
+| 2026-08-10 | Fixed a real, live-verified drift: `init`'s CLI shape changed from a simple base-color prompt + `"new-york"`/`"default"` style to named presets (`nova`/`vega`/`maia`/etc.) and a three-way primitive choice (`base`/`radix`/`aria`, "aria" is new). Found by actually running `npx shadcn@latest init` end-to-end while live-testing `/ts-new-project`'s full pipeline — this skill's documented `components.json` output no longer matched reality. |

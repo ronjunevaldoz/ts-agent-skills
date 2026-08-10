@@ -54,8 +54,10 @@ database and auth) but ask `AskUserQuestion` for anything genuinely undetermined
   included)
 - **Base color for `ts-shadcn-ui`?** — Neutral (recommended default), Slate, Zinc,
   Stone, or Gray. Always pre-select Neutral as the recommended option — purely
-  visual, cheap to change later (`components.json`'s `baseColor` field, re-run
-  `shadcn init` to change it), so don't spend more than one question on it.
+  visual, cheap to change later. Maps to the CLI's preset selection at init time
+  (`nova` for Neutral; see `ts-shadcn-ui`'s CLI Setup section for the current
+  preset list) rather than a standalone flag — don't spend more than one
+  question on it either way.
 
 Print the inferred assumptions before moving on, so the user can correct anything
 before scaffolding starts.
@@ -320,8 +322,9 @@ slice completes — the plan is live, not a one-time snapshot.
 11. **`ts-forms` + `ts-data-fetching`** — React Hook Form + the item 5 Zod schemas for
     every form; TanStack Query for every client-side fetch, keyed for granular
     invalidation, cursor-based pagination for any list that can grow past a page.
-12. **`ts-shadcn-ui`** — component system. Pick Base UI or Radix once at init, pass
-    Step 1's base color answer to `shadcn init`, use token classes
+12. **`ts-shadcn-ui`** — component system. `npx shadcn@latest init -t next -b base
+    -p <preset>` (Base UI, preset per Step 1's base color answer — see
+    `ts-shadcn-ui`'s CLI Setup for the current preset list), use token classes
     (`bg-background`, not `bg-slate-900`) so dark mode isn't hardcoded away.
 13. **`ts-accessibility`** — focus trapping/restoration on Dialog/Sheet, keyboard
     nav on Select/Combobox, `aria-label` on icon-only buttons, a skip-to-content
