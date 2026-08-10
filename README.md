@@ -14,6 +14,36 @@ Sibling collection to [`kmp-agent-skills`](https://github.com/ronjunevaldoz/kmp-
 (Kotlin Multiplatform) — same toolchain-scoped-skills model, TypeScript is the
 unifying toolchain here the way Kotlin+Gradle is there.
 
+---
+
+## Main Use Cases
+
+### Start a new project
+
+Run `/ts-new-project` with a natural language description. The agent asks a short
+set of clarifying questions, drafts an MVP + delivery plan and gets it confirmed
+before writing any code, then scaffolds the full project — wireframes, database,
+API layer, auth, `shadcn/ui`, tests, deploy config.
+
+```
+/ts-new-project "A SaaS dashboard with team billing"
+```
+
+**Don't just say "use ts-agent-skills to build this"** — that alone doesn't tell the
+agent to run the gated command. Invoke `/ts-new-project` explicitly, or ask the agent
+to run it. Without it, nothing routes through this collection's architecture
+decisions, review gates, or component system — the agent falls back to generic
+Next.js knowledge instead.
+
+1. **New project** → `/ts-new-project <description>`
+2. **Verify a change** → `/ts-verify`
+3. **Review a diff** → `/ts-review-changes`
+
+**Start here:** not sure which skill to use? Load `ts-expert` — it routes you to
+the smallest relevant skill set.
+
+---
+
 ## Why this exists
 
 Built from real production pain, not theory: the same architecture gaps kept costing

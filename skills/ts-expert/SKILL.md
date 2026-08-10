@@ -7,11 +7,16 @@ description: >
   any non-trivial TypeScript/Next.js architecture task to get routed to the
   right skill — the skill map, dependency graph, decision trees, and the
   Skill Invocation Map below all exist to answer "which skill do I use here?"
-  before any code gets written.
+  before any code gets written. Critically: a request to create, build, or
+  scaffold a new TypeScript/Next.js project (including a take-home exam, a
+  spec from an external doc, or a generic "use ts-agent-skills to build this")
+  must be routed to the /ts-new-project command, never implemented ad hoc —
+  that command owns the plan-confirmation gate, wireframe step, and full
+  build order this collection exists to provide.
 license: Apache-2.0
 metadata:
   author: ts-agent-skills
-  last-updated: '2026-08-08'
+  last-updated: '2026-08-10'
   keywords:
     - routing
     - expert
@@ -25,6 +30,12 @@ metadata:
     - build order
     - which skill
     - skill sequencing
+    - new project
+    - create a project
+    - scaffold a project
+    - build this app
+    - take-home
+    - ts-agent-skills
 ---
 
 ## When to Use This Skill
@@ -40,7 +51,17 @@ Use when you need to:
 
 **Trigger keywords:** which skill, ts-expert, skill order, TypeScript architecture
 decision, Next.js architecture decision, skill map, build order, dependency graph,
-where do I start, project plan, what do I use here.
+where do I start, project plan, what do I use here, new project, create a project,
+scaffold a project, build this app, take-home, use ts-agent-skills.
+
+**A request to build a new project is a command dispatch, not an implementation task.**
+"Use ts-agent-skills to create this project," "build this from the spec in this doc,"
+or any other from-scratch project request means: read this skill for context, then
+run `/ts-new-project <description>` — do not start writing Next.js code directly.
+Skipping the command is the confirmed, real failure mode: it skips the plan-confirmation
+gate (so nothing gets analyzed/summarized before code is written, even when explicitly
+asked for), and skips every downstream skill (`ts-shadcn-ui`, `ts-layout-system`,
+`ts-orm-database`, etc.) in favor of generic, un-routed Next.js knowledge.
 
 **Freshness rule:** recheck the skill count, the layer tables, and the Skill
 Invocation Map whenever a skill is added or removed from `skills/` — the routing
@@ -244,3 +265,4 @@ other skill in `skills/` is a routing destination, not a related skill.
 |---|---|
 | 2026-08-08 | Initial version. |
 | 2026-08-10 | Added `ts-layout-system` (19th skill) — low-fi wireframes, slotted into the Build Order right after `ts-nextjs-app-router`. |
+| 2026-08-10 | Confirmed real bug: a generic "use ts-agent-skills to create this project" request never routed to `/ts-new-project` — the agent implemented ad hoc from scratch (skipped `ts-shadcn-ui`, skipped the plan-confirmation gate even when explicitly asked to analyze first). Added explicit routing instruction + new-project trigger keywords to this skill's description and body. |
