@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.9.0] — 2026-08-10
+
+### Added
+
+- feat(ts-new-project): persist intake decisions to PLAN.md
+
+---
+
 ## [v0.8.0] — 2026-08-10
 
 ### Fixed
