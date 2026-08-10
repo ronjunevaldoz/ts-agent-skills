@@ -1,5 +1,5 @@
 {
-  "version": "0.7.0",
+  "version": "0.8.0",
   "skills": [
     {
       "name": "ts-api-layer",
@@ -34,7 +34,7 @@
     {
       "name": "ts-expert",
       "path": "skills/ts-expert",
-      "description": "TS Expert Orchestrator \u2014 maps every skill in this collection, their dependency order, and how to sequence them for a TypeScript/Next.js project. This is a meta-routing skill: it does not implement anything itself. Load it first for any non-trivial TypeScript/Next.js architecture task to get routed to the right skill \u2014 the skill map, dependency graph, decision trees, and the Skill Invocation Map below all exist to answer \"which skill do I use here?\" before any code gets written."
+      "description": "TS Expert Orchestrator \u2014 maps every skill in this collection, their dependency order, and how to sequence them for a TypeScript/Next.js project. This is a meta-routing skill: it does not implement anything itself. Load it first for any non-trivial TypeScript/Next.js architecture task to get routed to the right skill \u2014 the skill map, dependency graph, decision trees, and the Skill Invocation Map below all exist to answer \"which skill do I use here?\" before any code gets written. Critically: a request to create, build, or scaffold a new TypeScript/Next.js project (including a take-home exam, a spec from an external doc, or a generic \"use ts-agent-skills to build this\") must be routed to the /ts-new-project command, never implemented ad hoc \u2014 that command owns the plan-confirmation gate, wireframe step, and full build order this collection exists to provide."
     },
     {
       "name": "ts-forms",
