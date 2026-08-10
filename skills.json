@@ -1,5 +1,5 @@
 {
-  "version": "0.6.3",
+  "version": "0.7.0",
   "skills": [
     {
       "name": "ts-api-layer",
@@ -40,6 +40,11 @@
       "name": "ts-forms",
       "path": "skills/ts-forms",
       "description": "React Hook Form + Zod resolver integration \u2014 uncontrolled inputs by default, field-level errors, submit gating while pending, and one Zod schema reused for both client validation and Server Action re-validation. The client check is UX; the server check on the same schema is the actual security boundary."
+    },
+    {
+      "name": "ts-layout-system",
+      "path": "skills/ts-layout-system",
+      "description": "Drafts low-fidelity screen wireframes for a Next.js project before real implementation \u2014 gray-box JSX, no real styling, viewable live via the dev server instead of an ASCII sketch. Creates docs/layout-system/ (component table + region notes per screen) plus a dev-only wireframe route under app/(dev)/wireframes/ that never ships to production. Settles where things go before ts-shadcn-ui settles what they look like."
     },
     {
       "name": "ts-mongodb",

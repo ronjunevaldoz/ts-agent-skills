@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.7.0] — 2026-08-10
+
+### Added
+
+- feat(ts-layout-system): add low-fi wireframe skill
+
+---
+
 ## [v0.6.3] — 2026-08-10
 
 ### Fixed
