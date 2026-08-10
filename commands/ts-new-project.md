@@ -162,6 +162,21 @@ this point must not lose the plan.
 | [ ] | Not started |
 | [x] | Done |
 
+## Architecture decisions
+
+Carried over from Step 1's intake — the *why* behind what gets built, not just the
+task list. Only include rows Step 1 actually asked about or inferred; omit anything
+that didn't apply (e.g. no row for auth if the app has none).
+
+| Decision | Choice | Why |
+|---|---|---|
+| Database | <SQL (Prisma\|Drizzle) / MongoDB / none> | <reason from Step 1> |
+| Auth | <Auth.js/Clerk/Lucia / none> | <reason> |
+| API layer | <tRPC / REST> | <reason> |
+| Resilience | <included / skipped> | <reason> |
+| Background jobs | <included / skipped> | <reason> |
+| State management | <Redux/Zustand/Context> | <reason> |
+
 ## MVP scope
 
 - [ ] <feature 1> — <why it's core>
