@@ -1,6 +1,6 @@
 # /ts-review-changes
 
-**TS Agent Skills** — review everything in the current working tree against the 15
+**TS Agent Skills** — review everything in the current working tree against the 19
 skills' documented anti-patterns before considering the work done.
 
 ---

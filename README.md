@@ -33,11 +33,14 @@ API layer, auth, `shadcn/ui`, tests, deploy config.
 agent to run the gated command. Invoke `/ts-new-project` explicitly, or ask the agent
 to run it. Without it, nothing routes through this collection's architecture
 decisions, review gates, or component system — the agent falls back to generic
-Next.js knowledge instead.
+Next.js knowledge instead. For a structural guarantee instead of a hope, run
+`/ts-setup-agents` once after install — it writes a `.claude/AGENTS.md` that makes
+this routing automatic every session, not dependent on keyword matching.
 
-1. **New project** → `/ts-new-project <description>`
-2. **Verify a change** → `/ts-verify`
-3. **Review a diff** → `/ts-review-changes`
+1. **First time in a project** → `/ts-setup-agents` (bootstraps routing)
+2. **New project** → `/ts-new-project <description>`
+3. **Verify a change** → `/ts-verify`
+4. **Review a diff** → `/ts-review-changes`
 
 **Start here:** not sure which skill to use? Load `ts-expert` — it routes you to
 the smallest relevant skill set.
