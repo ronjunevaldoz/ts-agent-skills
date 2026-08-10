@@ -67,12 +67,130 @@ local-only or multi-user with accounts), ask rather than guessing either directi
 
 ---
 
-## Step 2 — Build in dependency order
+## Step 2 — Plan: MVP, delivery slices, tasks
+
+The gate before any code is written. Produce one **compact drafted plan** with
+recommendations pre-selected — never a blank template. The user should only need to
+say "looks good" or tweak one item. ⛔ No code is written during this step; the first
+line of code is written only after the user confirms in 2c.
+
+### 2a — Draft the MVP scope
+
+- Every MVP needs: a working route + at least one data-bearing page
+- Auth is MVP only if the app cannot work anonymously — otherwise post-MVP
+- Nice-to-haves (settings, profile, onboarding, notifications) → post-MVP by default
+- `ts-resilience` and `ts-background-jobs` are hardening, not core functionality —
+  post-MVP by default unless Step 1 found a real reason (payments, a scheduled job the
+  app can't function without)
+
+```
+## Draft: MVP scope
+
+MVP:
+  1. <feature> — <why it's core> (recommended)
+  2. <feature> — <why it's core> (recommended)
+  3. <feature> — included because auth is required to function
+
+Post-MVP (after first release):
+  4. <feature> — nice-to-have, not blocking
+  5. <feature> — can ship without it
+```
+
+### 2b — Draft the delivery slices
+
+Concrete slice names from the app type, not placeholders ("Alpha — browse products",
+not "Milestone 1").
+
+```
+## Draft: delivery plan
+
+Slice 1 — Foundation (~1 week)
+  Outcome: clean build, CI green, first route renders
+  Tasks: ts-project-foundation, ts-nextjs-app-router, ts-ci-github-actions,
+         ts-validation-schema wired
+
+Slice 2 — <First MVP feature> (~1 week)
+  Outcome: <feature> works end-to-end (data layer through UI)
+
+Slice N — Polish + QA (~1 week)
+  Outcome: ready for a first deploy
+  Tasks: Playwright e2e for the core flow, /ts-verify clean, Vercel preview deploy
+
+Estimated MVP: <N> weeks
+```
+
+### 2c — Confirm the plan
+
+Print 2a and 2b's drafts together, then use `AskUserQuestion` (not a printed prompt
+waiting for free text):
+
+- **Looks good** — accept the plan as drafted, proceed to 2d
+- **Move a task to a different slice**
+- **Add or remove a feature from MVP**
+- **Split a slice**
+
+**Do not proceed to 2d until confirmed.** After any change, re-print only the affected
+section with the change highlighted, then ask again — never re-print the whole plan for
+a minor edit.
+
+### 2d — Persist the plan to `PLAN.md`
+
+Immediately after confirmation — before any code is written — write `PLAN.md` at the
+project root. The printed draft in 2a/2b is not durable; a session that stops after
+this point must not lose the plan.
+
+```markdown
+# <PROJECT_NAME> — Development Plan
+
+<WHAT_IT_DOES>
+
+## Status key
+
+| Symbol | Meaning |
+|---|---|
+| [ ] | Not started |
+| [x] | Done |
+
+## MVP scope
+
+- [ ] <feature 1> — <why it's core>
+- [ ] <feature 2> — <why it's core>
+
+## Post-MVP
+
+- <feature> — nice-to-have, not blocking
+
+## Delivery plan
+
+### Slice 1 — Foundation (~1 week)
+Outcome: clean build, CI green, first route renders
+- [ ] <task>
+
+### Slice 2 — <First MVP feature> (~1 week)
+Outcome: <feature> works end-to-end
+- [ ] <task>
+
+### Slice N — Polish + QA (~1 week)
+Outcome: ready for a first deploy
+- [ ] Playwright e2e for the core flow
+- [ ] /ts-verify clean
+- [ ] Vercel preview deploy
+```
+
+Step 3 checks off each slice's tasks in this file as they complete — `PLAN.md` is the
+live source of truth for what's done, not the chat transcript. This is the *scaffolded
+project's* `PLAN.md`, not this collection's own — same filename, different repo,
+distinct purpose (a project roadmap here, a pointer to `ts-expert`'s table there).
+
+---
+
+## Step 3 — Build in dependency order
 
 Apply skills in `ts-expert`'s Build Order — each step assumes the one before it is
 settled. Skip a step only when Step 1 determined the project doesn't need it (e.g. no
 auth → skip `ts-auth`; no database → skip `ts-orm-database` and narrow `ts-api-layer`
-to a schema-validation-only contract).
+to a schema-validation-only contract). Check off each task in Step 2's `PLAN.md` as its
+slice completes — the plan is live, not a one-time snapshot.
 
 1. **`ts-project-foundation`** — monorepo layout (or single-package, if the project
    doesn't need a monorepo), `tsconfig.json` strict mode, ESLint flat config, pnpm
@@ -124,14 +242,14 @@ validate against or query yet.
 
 ---
 
-## Step 3 — Verify
+## Step 4 — Verify
 
 Run `/ts-verify` against the scaffolded project once every step above is done. Fix
 anything it flags before declaring the project ready.
 
 ---
 
-## Step 4 — Summary
+## Step 5 — Summary
 
 Print what was scaffolded:
 
