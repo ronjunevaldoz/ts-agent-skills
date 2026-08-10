@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.11.0] — 2026-08-10
+
+### Added
+
+- feat(ts-new-project): base color question + named layout patterns
+
+---
+
 ## [v0.10.1] — 2026-08-10
 
 ### Docs
