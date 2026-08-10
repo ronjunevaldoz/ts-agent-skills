@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.4.2] — 2026-08-10
+
+### Docs
+
+- docs: fill in the Apache 2.0 copyright appendix
+
+---
+
 ## [v0.4.1] — 2026-08-10
 
 ### Docs
