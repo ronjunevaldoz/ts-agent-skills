@@ -1,5 +1,10 @@
 # ts-agent-skills
 
+[![skills.sh](https://skills.sh/b/ronjunevaldoz/ts-agent-skills)](https://skills.sh/ronjunevaldoz/ts-agent-skills)
+[![License](https://img.shields.io/github/license/ronjunevaldoz/ts-agent-skills)](LICENSE)
+[![Repo size](https://img.shields.io/github/repo-size/ronjunevaldoz/ts-agent-skills)](https://github.com/ronjunevaldoz/ts-agent-skills)
+[![Last commit](https://img.shields.io/github/last-commit/ronjunevaldoz/ts-agent-skills)](https://github.com/ronjunevaldoz/ts-agent-skills)
+
 AI agent skills for **TypeScript** full-stack development — React, Next.js, and
 Node.js. Clean architecture boundaries, real decision guidance where the ecosystem is
 genuinely contested (state management, ORM, auth), and explicit review loops before
@@ -67,6 +72,17 @@ answers the request. Start with `ts-expert` to get routed to the right skill.
 
 Or trigger a skill directly by keyword — each `SKILL.md`'s **Trigger keywords** line
 fires automatically when your prompt matches.
+
+---
+
+## Installation
+
+```bash
+npx skills add ronjunevaldoz/ts-agent-skills
+```
+
+Or clone and copy the `skills/`, `agents/`, and `commands/` directories into your
+project's `.claude/` (or equivalent) directory manually.
 
 ---
 
