@@ -223,6 +223,7 @@ which is the point of the "finer control over generated SQL" tradeoff.
 - `ts-api-layer` — the route/handler layer that calls into these queries
 - `ts-project-foundation` — where the ORM package (`packages/db`) lives in the monorepo
 - `ts-validation-schema` — validating input before it reaches a Prisma/Drizzle write
+- `ts-resilience` — the atomic-update pattern for limited-resource ("last seat") contention
 - `ts-expert` — routing and build order for the full skill set
 
 ---

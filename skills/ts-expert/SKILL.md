@@ -65,7 +65,7 @@ Why:
 
 ---
 
-## The 15 Skills and What They Own
+## The 16 Skills and What They Own
 
 ### Foundation & Architecture Contract
 | Skill | Owns |
@@ -82,6 +82,7 @@ Why:
 | `ts-api-layer` | tRPC vs REST decision, API contract shape, request/response typing |
 | `ts-auth` | Auth.js vs Clerk vs Lucia decision, session handling, route protection |
 | `ts-deploy-vercel` | Vercel deployment, environment variables, preview deployments, edge vs node runtime |
+| `ts-resilience` | Retry/backoff, circuit breaker, timeout, rate limiting, idempotency keys, limited-resource ("last seat") contention |
 
 ### Feature Building Blocks
 | Skill | Owns |
@@ -126,6 +127,8 @@ ts-orm-database
         |
 ts-api-layer
         |
+ts-resilience
+        |
 ts-auth
         |
 ts-state-management
@@ -153,12 +156,13 @@ API contract has nothing stable to validate against or query.
 4. `ts-validation-schema` — Zod schemas
 5. `ts-orm-database` — Prisma/Drizzle
 6. `ts-api-layer` — tRPC/REST
-7. `ts-auth` — Auth.js/Clerk/Lucia
-8. `ts-state-management` — Redux/Zustand/Context
-9. `ts-forms` + `ts-data-fetching` — form submission and client-side fetching
-10. `ts-shadcn-ui` — component system
-11. `ts-testing-vitest` + `ts-testing-playwright` — unit/component tests and e2e tests
-12. `ts-deploy-vercel` — production deployment
+7. `ts-resilience` — retry, circuit breaker, timeout, rate limiting, idempotency keys
+8. `ts-auth` — Auth.js/Clerk/Lucia
+9. `ts-state-management` — Redux/Zustand/Context
+10. `ts-forms` + `ts-data-fetching` — form submission and client-side fetching
+11. `ts-shadcn-ui` — component system
+12. `ts-testing-vitest` + `ts-testing-playwright` — unit/component tests and e2e tests
+13. `ts-deploy-vercel` — production deployment
 
 ---
 
@@ -193,6 +197,7 @@ or a webhook/third-party callback → same skill, REST branch of its table.
 | "Prisma vs Drizzle", "database schema", "migration" | `ts-orm-database` |
 | "Auth.js", "Clerk", "Lucia", "session", "protect a route" | `ts-auth` |
 | "deploy to production", "Vercel", "preview deployment", "env vars" | `ts-deploy-vercel` |
+| "retry", "circuit breaker", "rate limiting", "idempotency key", "last seat", "timeout" | `ts-resilience` |
 | "add a form", "React Hook Form", "form validation UI" | `ts-forms` |
 | "fetch data on the client", "TanStack Query", "cache invalidation" | `ts-data-fetching` |
 | "shadcn/ui", "component library", "theme components" | `ts-shadcn-ui` |

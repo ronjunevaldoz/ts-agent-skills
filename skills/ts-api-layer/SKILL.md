@@ -262,6 +262,8 @@ react — keep the body's `error` field for human-readable detail only.
   handlers
 - `ts-auth` — session/token checks shared by tRPC middleware and REST route
   handlers
+- `ts-resilience` — retry, timeout, circuit breaker, and idempotency keys for calls
+  made through this layer
 - `ts-nextjs-app-router` — route handlers live at `app/api/*/route.ts` inside
   this routing structure
 - `ts-expert` — routing and build order for the full skill set

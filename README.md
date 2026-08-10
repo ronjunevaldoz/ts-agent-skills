@@ -13,7 +13,7 @@ is the unifying toolchain here the way Kotlin+Gradle is there.
 
 ## Skills
 
-15 skills covering the TypeScript/Next.js/Node stack. Load the smallest set that
+16 skills covering the TypeScript/Next.js/Node stack. Load the smallest set that
 answers the request. Start with `ts-expert` to get routed to the right skill.
 
 ### Foundation & Architecture Contract
@@ -28,6 +28,7 @@ answers the request. Start with `ts-expert` to get routed to the right skill.
 - `ts-orm-database` — Prisma vs Drizzle decision
 - `ts-auth` — Auth.js vs Clerk vs Lucia decision
 - `ts-deploy-vercel` — Vercel deployment, env vars, Edge vs Node runtime
+- `ts-resilience` — retry/backoff, circuit breaker, timeout, rate limiting, idempotency keys, "last seat" contention
 
 ### Feature Building Blocks
 - `ts-forms` — React Hook Form + Zod
