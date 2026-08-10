@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.2.0] — 2026-08-10
+
+### Added
+
+- feat(skills): add ts-resilience — retry, circuit breaker, rate limiting, idempotency
+
+---
+
 ## [v0.1.0] — 2026-08-08
 
 ### Added

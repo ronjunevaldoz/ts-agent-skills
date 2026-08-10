@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "skills": [
     {
       "name": "ts-api-layer",
@@ -50,6 +50,11 @@
       "name": "ts-project-foundation",
       "path": "skills/ts-project-foundation",
       "description": "TypeScript project architecture contract for a Next.js/Node monorepo \u2014 tsconfig strict-mode baseline, ESLint flat config + Prettier, pnpm workspaces + Turborepo layout, and package boundary rules. This is the TS analog of a Gradle module graph: TS has no compiler-enforced module boundary, so the workspace layout and lint rules together *are* the architecture contract every other skill assumes."
+    },
+    {
+      "name": "ts-resilience",
+      "path": "skills/ts-resilience",
+      "description": "Network resilience patterns for a TypeScript app \u2014 retry with exponential backoff and jitter, circuit breakers, timeouts, rate limiting, idempotency keys for safe mutation retries, and atomic contention handling for a limited resource (the \"last seat\" problem \u2014 N users racing to claim the same unit of inventory). Covers Cockatiel for in-process resilience, @upstash/ratelimit for edge/serverless rate limiting, and why a naive retry loop causes a thundering herd instead of recovery."
     },
     {
       "name": "ts-shadcn-ui",
