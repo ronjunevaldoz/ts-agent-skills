@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.3.0] — 2026-08-10
+
+### Added
+
+- feat(skills): scalability coverage + ts-mongodb — 16 to 18 skills
+
+---
+
 ## [v0.2.0] — 2026-08-10
 
 ### Added

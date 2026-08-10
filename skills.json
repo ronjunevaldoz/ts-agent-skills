@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "skills": [
     {
       "name": "ts-api-layer",
@@ -10,6 +10,11 @@
       "name": "ts-auth",
       "path": "skills/ts-auth",
       "description": "Auth.js (formerly NextAuth) vs Clerk vs Lucia decision for a Next.js/TypeScript app, plus the session-vs-JWT tradeoff and real route-protection code. Getting this wrong means either shipping a managed auth bill you didn't need, or hand-rolling session logic a maintained library already solved. Covers middleware, Server Component, and Server Action/API route protection."
+    },
+    {
+      "name": "ts-background-jobs",
+      "path": "skills/ts-background-jobs",
+      "description": "Offloading long-running work off the HTTP request/response cycle in a Next.js/Vercel-deployed TypeScript app \u2014 sending a batch of emails, processing an uploaded video, generating a report, calling a slow third-party API. Covers Vercel Cron Jobs for scheduled work, QStash for one-off event-triggered jobs with HTTP-based retries, and BullMQ/Inngest for sophisticated queue orchestration. Every serverless function has a hard execution-time ceiling; this skill is about what runs past it."
     },
     {
       "name": "ts-ci-github-actions",
@@ -35,6 +40,11 @@
       "name": "ts-forms",
       "path": "skills/ts-forms",
       "description": "React Hook Form + Zod resolver integration \u2014 uncontrolled inputs by default, field-level errors, submit gating while pending, and one Zod schema reused for both client validation and Server Action re-validation. The client check is UX; the server check on the same schema is the actual security boundary."
+    },
+    {
+      "name": "ts-mongodb",
+      "path": "skills/ts-mongodb",
+      "description": "MongoDB as the document-database alternative to `ts-orm-database`'s SQL/Prisma-Drizzle path \u2014 Mongoose vs the native `mongodb` Node.js driver, document mapping at the repository boundary, change streams for real-time reads, and indexing basics. Use when data is genuinely document-shaped or append-heavy, not as a default choice; the SQL-vs-NoSQL decision itself lives in `ts-orm-database` and `ts-expert`. Covers real schema/model code for both driver choices, tied back to `ts-validation-schema` for the native-driver path."
     },
     {
       "name": "ts-nextjs-app-router",
