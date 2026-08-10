@@ -22,6 +22,13 @@ options — not a printed block the user replies to in free text.
 
 Read `$ARGUMENTS`. If empty, ask what the app does before proceeding.
 
+Print, before any question is asked:
+
+```
+PROJECT: <description summary, one line>
+TARGET:  <current working directory>
+```
+
 From the description, infer what's obvious (e.g. "dashboard with billing" implies a
 database and auth) but ask `AskUserQuestion` for anything genuinely undetermined:
 
@@ -114,7 +121,8 @@ Slice 2 — <First MVP feature> (~1 week)
 
 Slice N — Polish + QA (~1 week)
   Outcome: ready for a first deploy
-  Tasks: Playwright e2e for the core flow, /ts-verify clean, Vercel preview deploy
+  Tasks: Playwright e2e for the core flow, CI pipeline green (lint, typecheck,
+         test, build), Vercel preview deploy
 
 Estimated MVP: <N> weeks
 ```
@@ -173,7 +181,7 @@ Outcome: <feature> works end-to-end
 ### Slice N — Polish + QA (~1 week)
 Outcome: ready for a first deploy
 - [ ] Playwright e2e for the core flow
-- [ ] /ts-verify clean
+- [ ] CI pipeline green (lint, typecheck, test, build)
 - [ ] Vercel preview deploy
 ```
 
@@ -247,7 +255,15 @@ validate against or query yet.
 
 ## Step 4 — Verify
 
-Run `/ts-verify` against the scaffolded project once every step above is done. Fix
+`/ts-verify` validates this skills collection itself (`skills/`, `commands/`,
+`scripts/`) — it does not apply to the scaffolded project. Instead, run the
+scaffolded project's own CI pipeline, the one `ts-ci-github-actions` wired in Step 3:
+
+```bash
+pnpm turbo run lint typecheck test build
+```
+
+This is the same command CI runs, so a clean local run means CI will pass too. Fix
 anything it flags before declaring the project ready.
 
 ---
@@ -273,7 +289,7 @@ SCAFFOLDED: <project name>
 NEXT STEPS:
   - <anything the user still needs to do manually — e.g. set real env vars,
     connect a real database, run the first migration>
-  - Run /ts-verify before the first PR
+  - Run `pnpm turbo run lint typecheck test build` before the first PR
 ```
 
 ---
