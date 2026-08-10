@@ -72,6 +72,40 @@ before scaffolding starts.
 If the description is ambiguous (e.g. "build a todo app" — could be single-user
 local-only or multi-user with accounts), ask rather than guessing either direction.
 
+### Persist the requirements analysis
+
+Once every question above is answered, write `docs/requirements-analysis.md` at the
+project root — this is the durable record of what was actually asked for. A printed
+summary alone doesn't survive a session stopping here, and "analyze and summarize"
+requests specifically (a linked spec doc, a take-home exam, a pasted requirements
+doc) need something on disk to hand off or come back to, not just a chat message.
+
+```markdown
+# <PROJECT_NAME> — Requirements Analysis
+
+## Source
+<"Plain description" | "Spec file: <path>" | "External doc: <link, if the user
+pasted content from one>">
+
+## Requirements (as given)
+
+<Restate the actual requirements, summarized but complete — every explicit
+requirement from the source, not a one-line gloss. If the source was long
+(a multi-page spec), this is the place to compress it faithfully — don't drop a
+requirement because it seemed minor.>
+
+## Assumptions made
+
+<Only the ambiguities Step 1 actually resolved — inferred or asked. Skip anything
+the source stated explicitly; this section is for gaps the source left open.>
+
+See `PLAN.md`'s Architecture decisions section for the resulting technical choices
+and reasoning — not duplicated here.
+```
+
+This file is written unconditionally, before Step 2's plan-confirmation gate — it's a
+record of the input, not a decision that could still change during 2c's review.
+
 ---
 
 ## Step 2 — Plan: MVP, delivery slices, tasks
