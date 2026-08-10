@@ -119,10 +119,76 @@ screen as a link, so reviewing the whole set is one page load.
 
 ---
 
+## Layout Patterns
+
+Four named shapes cover most screens. **Pick the closest match and state which one
+in the screen's spec file — don't ask the user to choose.** Layout is cheap to
+change (it's reviewed live in Step 3, not locked in), so recommend one and let the
+review catch a wrong pick, the same way `ts-shadcn-ui`'s base color gets a
+recommended default instead of an open-ended question.
+
+**Pattern A — nav + side panel + main.** Dashboard-shaped screens: a persistent
+icon nav rail, a secondary list/filter panel, and the primary content area.
+
+```tsx
+<div className="flex h-screen">
+  <div className="w-16 border-r bg-muted p-2 text-xs">[nav]</div>
+  <div className="w-56 border-r bg-muted p-2 text-xs">[side panel]</div>
+  <div className="flex-1 p-4 text-xs">[main content]</div>
+</div>
+```
+
+**Pattern B — nav + main only.** Same nav rail, no secondary panel — content fills
+the rest (tabs, a card grid, a single form).
+
+```tsx
+<div className="flex h-screen">
+  <div className="w-16 border-r bg-muted p-2 text-xs">[nav]</div>
+  <div className="flex-1 p-4 text-xs">
+    <div className="border-b bg-muted p-2">[tabs]</div>
+    <div className="grid grid-cols-3 gap-4 p-4">
+      <div className="aspect-square bg-muted">[card]</div>
+      <div className="aspect-square bg-muted">[card]</div>
+      <div className="aspect-square bg-muted">[card]</div>
+    </div>
+  </div>
+</div>
+```
+
+**Pattern C — modal/sheet overlay.** The underlying screen stays mounted; a dialog
+or sheet renders on top. Draw the base screen dimmed, the overlay on top.
+
+```tsx
+<div className="relative flex h-screen">
+  <div className="flex-1 bg-muted/30 p-4 text-xs">[base screen, dimmed]</div>
+  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+    <div className="w-96 border bg-background p-4 text-xs">
+      <div className="border-b pb-2">[sheet title]</div>
+      <div className="py-2">[sheet content]</div>
+    </div>
+  </div>
+</div>
+```
+
+**Pattern D — full-screen, no nav.** Login, onboarding, splash, error pages — no
+persistent chrome at all.
+
+```tsx
+<div className="flex h-screen items-center justify-center bg-muted/20">
+  <div className="w-96 bg-muted p-6 text-xs">[centered content]</div>
+</div>
+```
+
+---
+
 ## `docs/layout-system/<screen>.md` — The Spec
 
 ```markdown
 # Inbox
+
+## Pattern
+
+A — nav + side panel + main. Thread list is the side panel, message view is main.
 
 ## Regions
 
@@ -165,10 +231,13 @@ filled in during `ts-shadcn-ui`/feature implementation.
 ## Bootstrap (project has no layout-system yet)
 
 1. From the confirmed MVP scope (`ts-new-project` Step 2), list every screen.
-2. For each screen: write `docs/layout-system/<screen>.md`, then
-   `app/(dev)/wireframes/<screen>/page.tsx`.
-3. Write the `/wireframes` index page linking all of them.
-4. Print the list of URLs and ask the reviewer to run `pnpm dev` and look —
+2. For each screen: pick the closest Layout Pattern (A/B/C/D above) and note it —
+   don't ask, recommend one and let the visual review in step 4 catch a wrong pick.
+3. For each screen: write `docs/layout-system/<screen>.md` (Pattern + Regions),
+   then `app/(dev)/wireframes/<screen>/page.tsx` starting from that pattern's
+   template, customized with the screen's real regions.
+4. Write the `/wireframes` index page linking all of them.
+5. Print the list of URLs and ask the reviewer to run `pnpm dev` and look —
    this is a visual review, not a fixed-choice question, so don't force an
    `AskUserQuestion` popup here. Wait for actual feedback in the next
    message before moving on.
@@ -204,6 +273,7 @@ filled in during `ts-shadcn-ui`/feature implementation.
 | No real components used | Every region is a plain `<div>` with a `[label]`, not a real `ts-shadcn-ui` component |
 | Index page exists | `app/(dev)/wireframes/page.tsx` links every drafted screen |
 | `_components.md` current | Every component referenced in a screen file is listed |
+| Pattern stated | Every screen's spec file names which of the four Layout Patterns it uses |
 
 ---
 
@@ -224,3 +294,4 @@ filled in during `ts-shadcn-ui`/feature implementation.
 | Date | Change |
 |---|---|
 | 2026-08-10 | Initial version. |
+| 2026-08-10 | Added four named Layout Patterns (A/B/C/D), ported from `kmp-layout-system`'s ASCII patterns as JSX templates. The agent picks the closest match per screen and states it in the spec file — not asked, consistent with the visual-review-catches-a-wrong-pick approach the rest of this skill already uses. |

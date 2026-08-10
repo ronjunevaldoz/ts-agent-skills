@@ -52,6 +52,10 @@ database and auth) but ask `AskUserQuestion` for anything genuinely undetermined
 - **Redux, Zustand, or plain Context for client state?** — remind the user this is
   for genuine client-only state, not server data (that's `ts-data-fetching`, always
   included)
+- **Base color for `ts-shadcn-ui`?** — Neutral (recommended default), Slate, Zinc,
+  Stone, or Gray. Always pre-select Neutral as the recommended option — purely
+  visual, cheap to change later (`components.json`'s `baseColor` field, re-run
+  `shadcn init` to change it), so don't spend more than one question on it.
 
 Print the inferred assumptions before moving on, so the user can correct anything
 before scaffolding starts.
@@ -316,9 +320,9 @@ slice completes — the plan is live, not a one-time snapshot.
 11. **`ts-forms` + `ts-data-fetching`** — React Hook Form + the item 5 Zod schemas for
     every form; TanStack Query for every client-side fetch, keyed for granular
     invalidation, cursor-based pagination for any list that can grow past a page.
-12. **`ts-shadcn-ui`** — component system. Pick Base UI or Radix once at init, use
-    token classes (`bg-background`, not `bg-slate-900`) so dark mode isn't hardcoded
-    away.
+12. **`ts-shadcn-ui`** — component system. Pick Base UI or Radix once at init, pass
+    Step 1's base color answer to `shadcn init`, use token classes
+    (`bg-background`, not `bg-slate-900`) so dark mode isn't hardcoded away.
 13. **`ts-testing-vitest` + `ts-testing-playwright`** — unit/component coverage for
     forms, hooks, and utilities; e2e coverage for the critical user flows only
     (login, checkout, whatever the app's core loop is). Wire Playwright's
@@ -365,7 +369,7 @@ SCAFFOLDED: <project name>
   Auth:             ts-auth (<Auth.js|Clerk|Lucia|skipped>)
   State:            ts-state-management (<Redux|Zustand|Context|skipped>), ts-data-fetching
   Forms:            ts-forms
-  UI:               ts-shadcn-ui
+  UI:               ts-shadcn-ui (<base color>, <Base UI|Radix>)
   Testing:          ts-testing-vitest, ts-testing-playwright
   Deploy:           ts-deploy-vercel
 
