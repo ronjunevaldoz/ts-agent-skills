@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.6.0] — 2026-08-10
+
+### Added
+
+- feat(ts-new-project): offer next milestone after MVP ships
+
+---
+
 ## [v0.5.0] — 2026-08-10
 
 ### Added
