@@ -231,7 +231,10 @@ slice completes — the plan is live, not a one-time snapshot.
 12. **`ts-testing-vitest` + `ts-testing-playwright`** — unit/component coverage for
     forms, hooks, and utilities; e2e coverage for the critical user flows only
     (login, checkout, whatever the app's core loop is). Wire Playwright's
-    `webServer.command` to a production build, not `next dev`.
+    `webServer.command` to a production build, not `next dev`. Record a
+    `toHaveScreenshot()` baseline for each core page once its UI is stable, so later
+    changes get a visual-regression check for free — see `ts-testing-playwright`'s
+    Visual Regression section.
 13. **`ts-deploy-vercel`** — Root Directory set for monorepos, env vars scoped
     correctly per environment (Preview vs Production), `turbo-ignore` wired so
     unrelated app changes don't trigger a rebuild.
