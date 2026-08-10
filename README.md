@@ -41,6 +41,7 @@ this routing automatic every session, not dependent on keyword matching.
 2. **New project** → `/ts-new-project <description>`
 3. **Verify a change** → `/ts-verify`
 4. **Review a diff** → `/ts-review-changes`
+5. **Audit an existing project** → load `ts-audit`
 
 **Start here:** not sure which skill to use? Load `ts-expert` — it routes you to
 the smallest relevant skill set.
@@ -62,7 +63,7 @@ software engineer.
 
 ## Skills
 
-19 skills covering the TypeScript/Next.js/Node stack. Load the smallest set that
+21 skills covering the TypeScript/Next.js/Node stack. Load the smallest set that
 answers the request. Start with `ts-expert` to get routed to the right skill.
 
 ### Foundation & Architecture Contract
@@ -88,6 +89,7 @@ answers the request. Start with `ts-expert` to get routed to the right skill.
 
 ### UI System
 - `ts-shadcn-ui` — shadcn/ui component system (Base UI default as of July 2026, Radix still supported)
+- `ts-accessibility` — focus management, keyboard nav, ARIA, contrast, reduced motion for the Base UI/shadcn stack
 
 ### Testing & Quality
 - `ts-testing-vitest` — Vitest + React Testing Library, unit/component tests
@@ -95,6 +97,7 @@ answers the request. Start with `ts-expert` to get routed to the right skill.
 
 ### Meta
 - `ts-expert` — routing, dependency order, decision trees for the full skill set
+- `ts-audit` — post-hoc code-smell/architecture audit: findings, severity, fix order
 
 ---
 

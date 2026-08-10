@@ -86,7 +86,7 @@ Why:
 
 ---
 
-## The 19 Skills and What They Own
+## The 21 Skills and What They Own
 
 ### Foundation & Architecture Contract
 | Skill | Owns |
@@ -119,6 +119,7 @@ Why:
 | Skill | Owns |
 |---|---|
 | `ts-shadcn-ui` | shadcn/ui component system — install, theme, compose components |
+| `ts-accessibility` | Focus management, keyboard nav, ARIA, contrast, and reduced-motion for the Base UI/shadcn stack |
 
 ### Testing & Quality
 | Skill | Owns |
@@ -130,6 +131,7 @@ Why:
 | Skill | Owns |
 |---|---|
 | `ts-expert` | This skill — routing, dependency graph, decision trees, build order |
+| `ts-audit` | Post-hoc code-smell/architecture audit — findings + severity + fix order, not part of the linear Build Order |
 
 ---
 
@@ -165,11 +167,16 @@ ts-forms   ts-data-fetching
         |
 ts-shadcn-ui
         |
+ts-accessibility
+        |
    +----+----+
 ts-testing-vitest   ts-testing-playwright
         |
 ts-deploy-vercel
 ```
+
+`ts-audit` is not in this graph — it's a post-hoc review skill (findings + fix
+order), invoked after the build, not a step within it. See its own entry above.
 
 Each layer assumes the one above it is already decided. Skipping straight to
 `ts-api-layer` before `ts-validation-schema` and `ts-orm-database` are settled means the
@@ -189,8 +196,9 @@ API contract has nothing stable to validate against or query.
 10. `ts-state-management` — Redux/Zustand/Context
 11. `ts-forms` + `ts-data-fetching` — form submission and client-side fetching
 12. `ts-shadcn-ui` — component system
-13. `ts-testing-vitest` + `ts-testing-playwright` — unit/component tests and e2e tests
-14. `ts-deploy-vercel` — production deployment
+13. `ts-accessibility` — focus management, keyboard nav, contrast, reduced motion
+14. `ts-testing-vitest` + `ts-testing-playwright` — unit/component tests and e2e tests
+15. `ts-deploy-vercel` — production deployment
 
 ---
 
@@ -246,9 +254,11 @@ BullMQ/Inngest for complex orchestration). Its retry/idempotency handling is
 | "add a form", "React Hook Form", "form validation UI" | `ts-forms` |
 | "fetch data on the client", "TanStack Query", "cache invalidation" | `ts-data-fetching` |
 | "shadcn/ui", "component library", "theme components" | `ts-shadcn-ui` |
+| "accessibility", "a11y", "ARIA", "keyboard navigation", "focus management" | `ts-accessibility` |
 | "unit test", "component test", "Vitest" | `ts-testing-vitest` |
 | "e2e test", "end-to-end test", "Playwright", "browser test" | `ts-testing-playwright` |
 | "which skill", "project plan", "build order", "skill map" | `ts-expert` |
+| "audit", "code review", "code smell", "review this project", "tech debt" | `ts-audit` |
 
 ---
 
@@ -266,3 +276,4 @@ other skill in `skills/` is a routing destination, not a related skill.
 | 2026-08-08 | Initial version. |
 | 2026-08-10 | Added `ts-layout-system` (19th skill) — low-fi wireframes, slotted into the Build Order right after `ts-nextjs-app-router`. |
 | 2026-08-10 | Confirmed real bug: a generic "use ts-agent-skills to create this project" request never routed to `/ts-new-project` — the agent implemented ad hoc from scratch (skipped `ts-shadcn-ui`, skipped the plan-confirmation gate even when explicitly asked to analyze first). Added explicit routing instruction + new-project trigger keywords to this skill's description and body. |
+| 2026-08-10 | Added `ts-accessibility` (Build Order step 13, after `ts-shadcn-ui`) and `ts-audit` (Meta, post-hoc review — not in the Build Order) — 21 skills total. |

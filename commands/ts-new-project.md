@@ -9,7 +9,7 @@ language description.
 - A path to a sample spec file
 
 This is a single self-contained command — there is no phase-split reference tree to
-delegate to yet (this is a 19-skill v1 collection, not a large one that needs
+delegate to yet (this is a 21-skill v1 collection, not a large one that needs
 splitting). Load `ts-expert`'s SKILL.md once at the start for the skill map and Build
 Order, then work straight through the steps below.
 
@@ -323,14 +323,18 @@ slice completes — the plan is live, not a one-time snapshot.
 12. **`ts-shadcn-ui`** — component system. Pick Base UI or Radix once at init, pass
     Step 1's base color answer to `shadcn init`, use token classes
     (`bg-background`, not `bg-slate-900`) so dark mode isn't hardcoded away.
-13. **`ts-testing-vitest` + `ts-testing-playwright`** — unit/component coverage for
+13. **`ts-accessibility`** — focus trapping/restoration on Dialog/Sheet, keyboard
+    nav on Select/Combobox, `aria-label` on icon-only buttons, a skip-to-content
+    link, `alt` text on every `next/image`, and `motion-safe:`/`motion-reduce:`
+    on non-essential animations.
+14. **`ts-testing-vitest` + `ts-testing-playwright`** — unit/component coverage for
     forms, hooks, and utilities; e2e coverage for the critical user flows only
     (login, checkout, whatever the app's core loop is). Wire Playwright's
     `webServer.command` to a production build, not `next dev`. Record a
     `toHaveScreenshot()` baseline for each core page once its UI is stable, so later
     changes get a visual-regression check for free — see `ts-testing-playwright`'s
     Visual Regression section.
-14. **`ts-deploy-vercel`** — Root Directory set for monorepos, env vars scoped
+15. **`ts-deploy-vercel`** — Root Directory set for monorepos, env vars scoped
     correctly per environment (Preview vs Production), `turbo-ignore` wired so
     unrelated app changes don't trigger a rebuild.
 
@@ -369,7 +373,7 @@ SCAFFOLDED: <project name>
   Auth:             ts-auth (<Auth.js|Clerk|Lucia|skipped>)
   State:            ts-state-management (<Redux|Zustand|Context|skipped>), ts-data-fetching
   Forms:            ts-forms
-  UI:               ts-shadcn-ui (<base color>, <Base UI|Radix>)
+  UI:               ts-shadcn-ui (<base color>, <Base UI|Radix>), ts-accessibility
   Testing:          ts-testing-vitest, ts-testing-playwright
   Deploy:           ts-deploy-vercel
 
@@ -380,6 +384,8 @@ NEXT STEPS:
     component source into the repo, so edit the CSS variable tokens directly or run
     `npx shadcn add` for a different preset. Not a locked-in decision.
   - Run `pnpm turbo run lint typecheck test build` before the first PR
+  - Run `ts-audit` for a full findings/severity/fix-order pass before a PR or
+    handoff — `ts-review-changes` only checks the current diff, not the whole project
 ```
 
 ---
