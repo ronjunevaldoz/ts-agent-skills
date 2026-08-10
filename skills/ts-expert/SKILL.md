@@ -65,13 +65,14 @@ Why:
 
 ---
 
-## The 18 Skills and What They Own
+## The 19 Skills and What They Own
 
 ### Foundation & Architecture Contract
 | Skill | Owns |
 |---|---|
 | `ts-project-foundation` | Monorepo layout, tsconfig strict-mode baseline, ESLint flat config, pnpm workspaces + Turborepo, package boundary rules |
 | `ts-nextjs-app-router` | Server vs Client Component boundary, layouts and route groups, Server Actions, middleware |
+| `ts-layout-system` | Low-fidelity screen wireframes (dev-only routes), drafted before real components |
 | `ts-ci-github-actions` | CI pipeline — lint, typecheck, test, build, Turborepo remote caching |
 
 ### Core Infrastructure
@@ -121,6 +122,8 @@ ts-project-foundation
         |
 ts-nextjs-app-router
         |
+ts-layout-system
+        |
 ts-ci-github-actions
         |
 ts-validation-schema
@@ -155,17 +158,18 @@ API contract has nothing stable to validate against or query.
 
 1. `ts-project-foundation` — monorepo layout, tsconfig, ESLint
 2. `ts-nextjs-app-router` — Server/Client Component boundary, routes
-3. `ts-ci-github-actions` — CI pipeline
-4. `ts-validation-schema` — Zod schemas
-5. `ts-orm-database` (or `ts-mongodb` — see its Decision Trees entry below) — schema and queries
-6. `ts-api-layer` — tRPC/REST
-7. `ts-resilience` + `ts-background-jobs` — retry/circuit-breaker/rate-limiting, and offloading long-running work
-8. `ts-auth` — Auth.js/Clerk/Lucia
-9. `ts-state-management` — Redux/Zustand/Context
-10. `ts-forms` + `ts-data-fetching` — form submission and client-side fetching
-11. `ts-shadcn-ui` — component system
-12. `ts-testing-vitest` + `ts-testing-playwright` — unit/component tests and e2e tests
-13. `ts-deploy-vercel` — production deployment
+3. `ts-layout-system` — low-fi wireframes per MVP screen, before real components
+4. `ts-ci-github-actions` — CI pipeline
+5. `ts-validation-schema` — Zod schemas
+6. `ts-orm-database` (or `ts-mongodb` — see its Decision Trees entry below) — schema and queries
+7. `ts-api-layer` — tRPC/REST
+8. `ts-resilience` + `ts-background-jobs` — retry/circuit-breaker/rate-limiting, and offloading long-running work
+9. `ts-auth` — Auth.js/Clerk/Lucia
+10. `ts-state-management` — Redux/Zustand/Context
+11. `ts-forms` + `ts-data-fetching` — form submission and client-side fetching
+12. `ts-shadcn-ui` — component system
+13. `ts-testing-vitest` + `ts-testing-playwright` — unit/component tests and e2e tests
+14. `ts-deploy-vercel` — production deployment
 
 ---
 
@@ -207,6 +211,7 @@ BullMQ/Inngest for complex orchestration). Its retry/idempotency handling is
 |---|---|
 | "set up a monorepo", "tsconfig", "pnpm workspace", "package boundary" | `ts-project-foundation` |
 | "Server Component", "Client Component", "use client", "Server Action", "route group" | `ts-nextjs-app-router` |
+| "wireframe", "mock UI", "low-fi mockup", "screen layout", "sketch a screen" | `ts-layout-system` |
 | "CI pipeline", "GitHub Actions", "Turborepo caching in CI" | `ts-ci-github-actions` |
 | "Redux vs Zustand", "Context state", "client state", "global state" | `ts-state-management` |
 | "Zod schema", "runtime validation", "parse input" | `ts-validation-schema` |
@@ -238,3 +243,4 @@ other skill in `skills/` is a routing destination, not a related skill.
 | Date | Change |
 |---|---|
 | 2026-08-08 | Initial version. |
+| 2026-08-10 | Added `ts-layout-system` (19th skill) — low-fi wireframes, slotted into the Build Order right after `ts-nextjs-app-router`. |

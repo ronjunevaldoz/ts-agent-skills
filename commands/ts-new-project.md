@@ -9,7 +9,7 @@ language description.
 - A path to a sample spec file
 
 This is a single self-contained command — there is no phase-split reference tree to
-delegate to yet (this is an 18-skill v1 collection, not a large one that needs
+delegate to yet (this is a 19-skill v1 collection, not a large one that needs
 splitting). Load `ts-expert`'s SKILL.md once at the start for the skill map and Build
 Order, then work straight through the steps below.
 
@@ -188,14 +188,43 @@ Outcome: ready for a first deploy
 - [ ] Vercel preview deploy
 ```
 
-Step 3 checks off each slice's tasks in this file as they complete — `PLAN.md` is the
+Step 4 checks off each slice's tasks in this file as they complete — `PLAN.md` is the
 live source of truth for what's done, not the chat transcript. This is the *scaffolded
 project's* `PLAN.md`, not this collection's own — same filename, different repo,
 distinct purpose (a project roadmap here, a pointer to `ts-expert`'s table there).
 
 ---
 
-## Step 3 — Build in dependency order
+## Step 3 — Draft wireframes
+
+Before real components get built, draft a low-fidelity wireframe for each MVP screen
+from Step 2's confirmed plan — see `ts-layout-system`. Gray-box JSX, no real styling,
+viewable live via the dev server instead of an ASCII sketch.
+
+For each MVP screen: write `docs/layout-system/<screen>.md` (component table + region
+notes) and `app/(dev)/wireframes/<screen>/page.tsx` (the live gray-box JSX, guarded to
+never render in production). Write the `/wireframes` index page linking all of them.
+
+Print the list of URLs and end the turn there — this is a visual review, not a
+fixed-choice decision, so don't force an `AskUserQuestion` popup here:
+
+```
+WIREFRAMES DRAFTED: <N> screens
+
+  Run `pnpm dev`, then visit:
+    /wireframes/<screen-1>
+    /wireframes/<screen-2>
+
+Review the layout before Step 4 builds the real components. Ask for changes in
+plain language, or say "looks good" to proceed.
+```
+
+On "looks good" (or equivalent), proceed to Step 4. On requested changes, edit the
+wireframe file(s) and re-print the updated URL list.
+
+---
+
+## Step 4 — Build in dependency order
 
 Apply skills in `ts-expert`'s Build Order — each step assumes the one before it is
 settled. Skip a step only when Step 1 determined the project doesn't need it (e.g. no
@@ -209,44 +238,46 @@ slice completes — the plan is live, not a one-time snapshot.
 2. **`ts-nextjs-app-router`** — app directory, route groups, layouts, the Server vs
    Client Component boundary. Default every new component to a Server Component;
    only add `"use client"` at the actual interactive leaf.
-3. **`ts-ci-github-actions`** — CI pipeline: lint, typecheck, test, build, Turborepo
+3. **`ts-layout-system`** — already drafted in Step 3 above; this is where the real
+   components start replacing each screen's gray-box placeholders.
+4. **`ts-ci-github-actions`** — CI pipeline: lint, typecheck, test, build, Turborepo
    remote caching wired with `--frozen-lockfile`.
-4. **`ts-validation-schema`** — Zod schemas for every shape that crosses a trust
+5. **`ts-validation-schema`** — Zod schemas for every shape that crosses a trust
    boundary (form input, API request body, env vars). This is the source every later
    step (`ts-orm-database`, `ts-api-layer`, `ts-forms`) derives types from — settle it
    before anything downstream needs a shape to validate against.
-5. **`ts-orm-database`** (SQL, default) **or `ts-mongodb`** (only if Step 1's
+6. **`ts-orm-database`** (SQL, default) **or `ts-mongodb`** (only if Step 1's
    SQL-vs-MongoDB answer says document/NoSQL) — only if a database is needed at all.
    Schema + first migration, typed query client. Never both — the decision is
    exclusive, not additive.
-6. **`ts-api-layer`** — tRPC or REST per Step 1's answer. Procedures/routes validate
-   every input with the Step 4 schemas; server-side validation always runs regardless
+7. **`ts-api-layer`** — tRPC or REST per Step 1's answer. Procedures/routes validate
+   every input with the item 5 schemas; server-side validation always runs regardless
    of what the client already checked.
-7. **`ts-resilience`** (only if Step 1 said yes) **+ `ts-background-jobs`** (only if
+8. **`ts-resilience`** (only if Step 1 said yes) **+ `ts-background-jobs`** (only if
    Step 1 said yes) — retry/circuit-breaker/rate-limiting wraps calls made through the
-   Step 6 API layer; background jobs offload anything that could exceed a serverless
+   item 7 API layer; background jobs offload anything that could exceed a serverless
    function's execution limit. Independent decisions — a project can need one, both,
    or neither.
-8. **`ts-auth`** — only if Step 1 said yes. Auth.js/Clerk/Lucia per its decision table,
+9. **`ts-auth`** — only if Step 1 said yes. Auth.js/Clerk/Lucia per its decision table,
    session handling, route protection, and the auth check inside the mutation itself
    (not just middleware).
-9. **`ts-state-management`** — only for genuine client-only state (UI toggles, cart,
-   multi-step wizard progress). Server-derived data goes through `ts-data-fetching`
-   instead, never here.
-10. **`ts-forms` + `ts-data-fetching`** — React Hook Form + the Step 4 Zod schemas for
+10. **`ts-state-management`** — only for genuine client-only state (UI toggles, cart,
+    multi-step wizard progress). Server-derived data goes through `ts-data-fetching`
+    instead, never here.
+11. **`ts-forms` + `ts-data-fetching`** — React Hook Form + the item 5 Zod schemas for
     every form; TanStack Query for every client-side fetch, keyed for granular
     invalidation, cursor-based pagination for any list that can grow past a page.
-11. **`ts-shadcn-ui`** — component system. Pick Base UI or Radix once at init, use
+12. **`ts-shadcn-ui`** — component system. Pick Base UI or Radix once at init, use
     token classes (`bg-background`, not `bg-slate-900`) so dark mode isn't hardcoded
     away.
-12. **`ts-testing-vitest` + `ts-testing-playwright`** — unit/component coverage for
+13. **`ts-testing-vitest` + `ts-testing-playwright`** — unit/component coverage for
     forms, hooks, and utilities; e2e coverage for the critical user flows only
     (login, checkout, whatever the app's core loop is). Wire Playwright's
     `webServer.command` to a production build, not `next dev`. Record a
     `toHaveScreenshot()` baseline for each core page once its UI is stable, so later
     changes get a visual-regression check for free — see `ts-testing-playwright`'s
     Visual Regression section.
-13. **`ts-deploy-vercel`** — Root Directory set for monorepos, env vars scoped
+14. **`ts-deploy-vercel`** — Root Directory set for monorepos, env vars scoped
     correctly per environment (Preview vs Production), `turbo-ignore` wired so
     unrelated app changes don't trigger a rebuild.
 
@@ -256,11 +287,11 @@ validate against or query yet.
 
 ---
 
-## Step 4 — Verify
+## Step 5 — Verify
 
 `/ts-verify` validates this skills collection itself (`skills/`, `commands/`,
 `scripts/`) — it does not apply to the scaffolded project. Instead, run the
-scaffolded project's own CI pipeline, the one `ts-ci-github-actions` wired in Step 3:
+scaffolded project's own CI pipeline, the one `ts-ci-github-actions` wired in Step 4:
 
 ```bash
 pnpm turbo run lint typecheck test build
@@ -271,14 +302,14 @@ anything it flags before declaring the project ready.
 
 ---
 
-## Step 5 — Summary
+## Step 6 — Summary
 
 Print what was scaffolded:
 
 ```
 SCAFFOLDED: <project name>
 
-  Foundation:       ts-project-foundation, ts-nextjs-app-router, ts-ci-github-actions
+  Foundation:       ts-project-foundation, ts-nextjs-app-router, ts-layout-system, ts-ci-github-actions
   Data:             ts-validation-schema, <ts-orm-database (Prisma|Drizzle)|ts-mongodb (Mongoose|native)|skipped>
   API:              ts-api-layer (<tRPC|REST>)
   Resilience:       <ts-resilience|skipped>, <ts-background-jobs|skipped>
@@ -297,7 +328,7 @@ NEXT STEPS:
 
 ---
 
-## Step 6 — Offer the next milestone
+## Step 7 — Offer the next milestone
 
 `PLAN.md`'s `## MVP scope` is now fully checked off. Before ending the session, draft
 the next milestone from `## Post-MVP` — same draft → confirm → persist pattern as

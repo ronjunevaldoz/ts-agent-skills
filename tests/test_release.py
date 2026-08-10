@@ -24,7 +24,7 @@ class ExtractSkillsTests(unittest.TestCase):
         names = {s["name"] for s in skills}
         self.assertIn("ts-expert", names)
         self.assertIn("ts-project-foundation", names)
-        self.assertEqual(len(skills), 18)
+        self.assertEqual(len(skills), 19)
 
 
 if __name__ == "__main__":
