@@ -9,7 +9,7 @@ language description.
 - A path to a sample spec file
 
 This is a single self-contained command — there is no phase-split reference tree to
-delegate to yet (this is a 15-skill v1 collection, not a large one that needs
+delegate to yet (this is an 18-skill v1 collection, not a large one that needs
 splitting). Load `ts-expert`'s SKILL.md once at the start for the skill map and Build
 Order, then work straight through the steps below.
 
@@ -26,12 +26,22 @@ From the description, infer what's obvious (e.g. "dashboard with billing" implie
 database and auth) but ask `AskUserQuestion` for anything genuinely undetermined:
 
 - **Does it need a database?** (most apps do — skip only for a static/marketing site)
+- **SQL or MongoDB?** — only if a database is needed. Default to SQL; MongoDB only for
+  genuinely document-shaped/variable-structure data or an append-heavy, rarely-joined
+  pattern (event logs, time-series) — `ts-orm-database`'s Recommendation First and
+  `ts-expert`'s Decision Trees own this in full
+- **Prisma or Drizzle?** (if SQL) / native driver or Mongoose (if MongoDB) — only if a
+  database is needed; `ts-orm-database`/`ts-mongodb` own the full decision tables
 - **Does it need auth?** If yes: Auth.js, Clerk, or Lucia — `ts-auth` owns this
   decision table, ask again there if the answer is "not sure"
 - **tRPC or REST?** REST if the API needs non-TS consumers (mobile app, public API,
   webhooks); tRPC if client and server are both TypeScript in the same repo
-- **Prisma or Drizzle?** — only if a database is needed; `ts-orm-database` owns the
-  full decision table
+- **Does any call need real resilience?** (payments, a flaky third-party API, anything
+  where a silent failure has a real cost) → `ts-resilience`. Skip for a simple internal
+  tool with no external dependency worth protecting against
+- **Does anything need to run outside the request cycle?** (emails, webhooks, scheduled
+  reports, anything that could exceed a serverless function's time limit) →
+  `ts-background-jobs`. Skip if every operation genuinely completes inline
 - **Redux, Zustand, or plain Context for client state?** — remind the user this is
   for genuine client-only state, not server data (that's `ts-data-fetching`, always
   included)
@@ -48,6 +58,9 @@ before scaffolding starts.
 | "landing page", "marketing site", "blog" (no CMS mentioned) | no database, no auth — skip both |
 | "mobile app calls this", "public API", "webhook" | REST, not tRPC |
 | "just me and the frontend", "same repo", no external consumer named | tRPC is the default |
+| "payment", "billing", "checkout", "third-party API", "flaky", "external service" | include `ts-resilience` |
+| "email", "report", "export", "webhook", "scheduled", "notification" | include `ts-background-jobs` |
+| "activity feed", "logs", "events", "analytics", "time-series", CMS with varied content shapes | MongoDB, not SQL — confirm, don't assume |
 
 If the description is ambiguous (e.g. "build a todo app" — could be single-user
 local-only or multi-user with accounts), ask rather than guessing either direction.
@@ -73,28 +86,35 @@ to a schema-validation-only contract).
    boundary (form input, API request body, env vars). This is the source every later
    step (`ts-orm-database`, `ts-api-layer`, `ts-forms`) derives types from — settle it
    before anything downstream needs a shape to validate against.
-5. **`ts-orm-database`** — only if Step 1 said yes. Prisma or Drizzle per its decision
-   table, schema + first migration, typed query client.
+5. **`ts-orm-database`** (SQL, default) **or `ts-mongodb`** (only if Step 1's
+   SQL-vs-MongoDB answer says document/NoSQL) — only if a database is needed at all.
+   Schema + first migration, typed query client. Never both — the decision is
+   exclusive, not additive.
 6. **`ts-api-layer`** — tRPC or REST per Step 1's answer. Procedures/routes validate
    every input with the Step 4 schemas; server-side validation always runs regardless
    of what the client already checked.
-7. **`ts-auth`** — only if Step 1 said yes. Auth.js/Clerk/Lucia per its decision table,
+7. **`ts-resilience`** (only if Step 1 said yes) **+ `ts-background-jobs`** (only if
+   Step 1 said yes) — retry/circuit-breaker/rate-limiting wraps calls made through the
+   Step 6 API layer; background jobs offload anything that could exceed a serverless
+   function's execution limit. Independent decisions — a project can need one, both,
+   or neither.
+8. **`ts-auth`** — only if Step 1 said yes. Auth.js/Clerk/Lucia per its decision table,
    session handling, route protection, and the auth check inside the mutation itself
    (not just middleware).
-8. **`ts-state-management`** — only for genuine client-only state (UI toggles, cart,
+9. **`ts-state-management`** — only for genuine client-only state (UI toggles, cart,
    multi-step wizard progress). Server-derived data goes through `ts-data-fetching`
    instead, never here.
-9. **`ts-forms` + `ts-data-fetching`** — React Hook Form + the Step 4 Zod schemas for
-   every form; TanStack Query for every client-side fetch, keyed for granular
-   invalidation.
-10. **`ts-shadcn-ui`** — component system. Pick Base UI or Radix once at init, use
+10. **`ts-forms` + `ts-data-fetching`** — React Hook Form + the Step 4 Zod schemas for
+    every form; TanStack Query for every client-side fetch, keyed for granular
+    invalidation, cursor-based pagination for any list that can grow past a page.
+11. **`ts-shadcn-ui`** — component system. Pick Base UI or Radix once at init, use
     token classes (`bg-background`, not `bg-slate-900`) so dark mode isn't hardcoded
     away.
-11. **`ts-testing-vitest` + `ts-testing-playwright`** — unit/component coverage for
+12. **`ts-testing-vitest` + `ts-testing-playwright`** — unit/component coverage for
     forms, hooks, and utilities; e2e coverage for the critical user flows only
     (login, checkout, whatever the app's core loop is). Wire Playwright's
     `webServer.command` to a production build, not `next dev`.
-12. **`ts-deploy-vercel`** — Root Directory set for monorepos, env vars scoped
+13. **`ts-deploy-vercel`** — Root Directory set for monorepos, env vars scoped
     correctly per environment (Preview vs Production), `turbo-ignore` wired so
     unrelated app changes don't trigger a rebuild.
 
@@ -119,8 +139,9 @@ Print what was scaffolded:
 SCAFFOLDED: <project name>
 
   Foundation:       ts-project-foundation, ts-nextjs-app-router, ts-ci-github-actions
-  Data:             ts-validation-schema, ts-orm-database (<Prisma|Drizzle|skipped>)
+  Data:             ts-validation-schema, <ts-orm-database (Prisma|Drizzle)|ts-mongodb (Mongoose|native)|skipped>
   API:              ts-api-layer (<tRPC|REST>)
+  Resilience:       <ts-resilience|skipped>, <ts-background-jobs|skipped>
   Auth:             ts-auth (<Auth.js|Clerk|Lucia|skipped>)
   State:            ts-state-management (<Redux|Zustand|Context|skipped>), ts-data-fetching
   Forms:            ts-forms
@@ -151,6 +172,9 @@ NEXT STEPS:
   `ts-api-layer` covers switching later if the requirement genuinely changes (e.g. a
   mobile client gets added to a tRPC-only project), but that's a deliberate migration,
   not a default to hedge against up front.
-- If Step 1 skipped `ts-auth` and `ts-orm-database`, still scaffold `ts-testing-vitest`
-  and `ts-testing-playwright` — test coverage isn't conditional on which optional
-  skills were needed, every project gets it.
+- If Step 1 skipped `ts-auth` and both database options, still scaffold
+  `ts-testing-vitest` and `ts-testing-playwright` — test coverage isn't conditional on
+  which optional skills were needed, every project gets it.
+- `ts-orm-database` and `ts-mongodb` are mutually exclusive — never scaffold both.
+  `ts-resilience` and `ts-background-jobs` are independent of each other and of the
+  database choice — a project can need any combination of the four, including none.
