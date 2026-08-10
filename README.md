@@ -1,13 +1,24 @@
 # ts-agent-skills
 
 AI agent skills for **TypeScript** full-stack development — React, Next.js, and
-Node.js — clean architecture boundaries, real decision guidance where the ecosystem
-is genuinely contested (state management, ORM, auth), and explicit review loops
-before code is generated.
+Node.js. Clean architecture boundaries, real decision guidance where the ecosystem is
+genuinely contested (state management, ORM, auth), and explicit review loops before
+code is generated.
 
 Sibling collection to [`kmp-agent-skills`](https://github.com/ronjunevaldoz/kmp-agent-skills)
-(Kotlin Multiplatform), applying the same toolchain-scoped-skills model — TypeScript
-is the unifying toolchain here the way Kotlin+Gradle is there.
+(Kotlin Multiplatform) — same toolchain-scoped-skills model, TypeScript is the
+unifying toolchain here the way Kotlin+Gradle is there.
+
+## Why this exists
+
+Built from real production pain, not theory: the same architecture gaps kept costing
+time across real projects, so the fix was to research how mature ecosystems actually
+solve them — and codify it once, held to the same rigor as production code (tests,
+release gates, sources verified against real docs) instead of another prose-only best
+practices doc that goes stale.
+
+Built by [Ron June Valdoz](https://github.com/ronjunevaldoz) — full-stack and mobile
+software engineer.
 
 ---
 
