@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.13.1] — 2026-08-10
+
+### Fixed
+
+- fix(ts-shadcn-ui): correct CLI docs against real current behavior
+
+---
+
 ## [v0.13.0] — 2026-08-10
 
 ### Added
