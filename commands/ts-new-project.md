@@ -129,8 +129,11 @@ Estimated MVP: <N> weeks
 
 ### 2c — Confirm the plan
 
-Print 2a and 2b's drafts together, then use `AskUserQuestion` (not a printed prompt
-waiting for free text):
+Print 2a and 2b's drafts together and **end the turn there** — do not call
+`AskUserQuestion` in the same response. The confirmation popup renders on top of the
+draft; calling both together gives the user no real chance to read the plan before
+being asked to approve it. Ask for confirmation via `AskUserQuestion` only in the next
+message:
 
 - **Looks good** — accept the plan as drafted, proceed to 2d
 - **Move a task to a different slice**
@@ -138,8 +141,8 @@ waiting for free text):
 - **Split a slice**
 
 **Do not proceed to 2d until confirmed.** After any change, re-print only the affected
-section with the change highlighted, then ask again — never re-print the whole plan for
-a minor edit.
+section with the change highlighted, then ask again (same two-turn split) — never
+re-print the whole plan for a minor edit.
 
 ### 2d — Persist the plan to `PLAN.md`
 
@@ -312,8 +315,10 @@ Slice <N+1> — <name from the top Post-MVP items> (~1 week)
 Remaining Post-MVP (not in this milestone): <rest>
 ```
 
-Confirm via `AskUserQuestion` (same options as Step 2c: looks good / move a task /
-add-remove a feature / split). On confirm, append the new slice to `PLAN.md`'s
+Print the draft and end the turn there, same two-turn split as Step 2c — do not call
+`AskUserQuestion` in the same response. Confirm in the next message (same options as
+Step 2c: looks good / move a task / add-remove a feature / split). On confirm, append
+the new slice to `PLAN.md`'s
 `## Delivery plan` with checkbox tasks, and remove the drafted items from
 `## Post-MVP`.
 
