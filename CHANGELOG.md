@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.3.1] — 2026-08-10
+
+### Fixed
+
+- fix(new-project): wire ts-resilience, ts-mongodb, ts-background-jobs into scaffold
+
+---
+
 ## [v0.3.0] — 2026-08-10
 
 ### Added
