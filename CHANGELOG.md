@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.10.1] — 2026-08-10
+
+### Docs
+
+- docs(ts-new-project): note theme is easily customizable in summary
+
+---
+
 ## [v0.10.0] — 2026-08-10
 
 ### Added
