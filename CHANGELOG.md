@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.10.0] — 2026-08-10
+
+### Added
+
+- feat(ts-new-project): persist requirements analysis at intake
+
+---
+
 ## [v0.9.0] — 2026-08-10
 
 ### Added
