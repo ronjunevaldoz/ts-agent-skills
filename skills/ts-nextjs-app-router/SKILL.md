@@ -208,7 +208,8 @@ opts the route out of static caching.
 
 ## Related Skills
 
-- `ts-project-foundation` — the package layout this app architecture sits inside
+- `ts-project-foundation` — the package layout this app architecture sits inside,
+  including where feature/business-logic code lives (`app/` here is routing only)
 - `ts-forms` — React Hook Form + Zod, often paired with a Server Action for the submit
 - `ts-auth` — session checks in middleware and layouts
 - `ts-expert` — routing and build order for the full skill set
@@ -220,3 +221,4 @@ opts the route out of static caching.
 | Date | Change |
 |---|---|
 | 2026-08-08 | Initial version. |
+| 2026-08-10 | Clarified `ts-project-foundation` cross-link: `app/` is routing only, feature code lives elsewhere. |

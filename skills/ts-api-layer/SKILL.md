@@ -264,6 +264,8 @@ react — keep the body's `error` field for human-readable detail only.
   handlers
 - `ts-resilience` — retry, timeout, circuit breaker, and idempotency keys for calls
   made through this layer
+- `ts-project-foundation` — Nest.js module-per-feature vs Express folder convention
+  when `apps/api` is a separate backend
 - `ts-nextjs-app-router` — route handlers live at `app/api/*/route.ts` inside
   this routing structure
 - `ts-expert` — routing and build order for the full skill set
@@ -275,3 +277,4 @@ react — keep the body's `error` field for human-readable detail only.
 | Date | Change |
 |---|---|
 | 2026-08-08 | Initial version. |
+| 2026-08-10 | Added `ts-project-foundation` cross-link for Nest.js/Express structure. |

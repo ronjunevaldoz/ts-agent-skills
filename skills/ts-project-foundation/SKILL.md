@@ -93,6 +93,69 @@ Each package depends on another via the `workspace:*` protocol, never a version 
 
 ---
 
+## Organizing Feature Code — Frontend vs Backend
+
+The `apps/`/`packages/` layout above is the workspace-level boundary. Within `apps/web`,
+features need their own convention — App Router (`ts-nextjs-app-router`) only defines
+routing, not where business logic lives.
+
+### Frontend (`apps/web`) — flat `features/` folders
+
+```
+apps/web/
+├── app/                    # routing only — see ts-nextjs-app-router
+├── features/
+│   ├── billing/
+│   │   ├── api/             # queries/mutations for this feature
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   └── types.ts
+│   └── team-members/
+│       └── ...
+```
+
+Rule: `shared → features → app`, one-directional. A feature never imports another
+feature directly — share through `packages/ui`/`packages/types`, or lift the shared
+piece into its own package. Enforce with ESLint, not just convention:
+
+```js
+// eslint.config.js
+{
+  rules: {
+    "import/no-restricted-paths": ["error", {
+      zones: [
+        { target: "./features/billing", from: "./features/team-members" },
+      ],
+    }],
+  },
+}
+```
+
+This flat convention (bulletproof-react) is the right weight for most apps. If the app
+accumulates enough shared business-domain objects (a `user`/`product`/`order` reused
+across many features) that flat `features/` starts tangling, escalate to Feature-Sliced
+Design's full layer stack (`app → pages → widgets → features → entities → shared`) —
+don't adopt FSD's seven layers up front for an app that doesn't need them yet.
+
+### Backend (`apps/api`) — framework decides, not convention
+
+- **Nest.js** — feature boundaries are framework-enforced, not a convention to
+  remember. Each feature is a `@Module` (`nest g module billing`) whose
+  `controllers`/`providers` are private unless explicitly listed in `exports` — an
+  unexported service literally cannot be injected into another module. `nest generate`
+  colocates `billing.module.ts`, `billing.controller.ts`, `billing.service.ts` in one
+  folder by default.
+- **Express** — has no module system, so nothing enforces this. Mirror the same shape
+  by hand (`routes/billing/{router,controller,service}.ts` per feature) and, if
+  cross-feature imports matter, apply the same `import/no-restricted-paths` rule used
+  on the frontend — Express won't stop a stray import otherwise.
+
+This is why the Layout above lists Nest.js first for `apps/api` when a separate
+backend is needed: it makes this boundary a compiler-enforced fact instead of a lint
+rule people can route around.
+
+---
+
 ## tsconfig — the strict baseline
 
 ```jsonc
@@ -180,3 +243,4 @@ exports are the real public surface.
 | Date | Change |
 |---|---|
 | 2026-08-08 | Initial version. |
+| 2026-08-10 | Added "Organizing Feature Code" — frontend `features/` convention (bulletproof-react), FSD as the escalation path, Nest.js module-per-feature vs Express for `apps/api`. |
