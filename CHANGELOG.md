@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.4.3] — 2026-08-10
+
+### Docs
+
+- docs(readme): add badges and installation section
+
+---
+
 ## [v0.4.2] — 2026-08-10
 
 ### Docs
