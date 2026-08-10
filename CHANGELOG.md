@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.13.0] — 2026-08-10
+
+### Added
+
+- feat(ts-audit): add code-smell audit and accessibility skills
+
+---
+
 ## [v0.12.0] — 2026-08-10
 
 ### Added

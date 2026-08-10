@@ -1,10 +1,20 @@
 {
-  "version": "0.12.0",
+  "version": "0.13.0",
   "skills": [
+    {
+      "name": "ts-accessibility",
+      "path": "skills/ts-accessibility",
+      "description": "Accessibility (a11y) for the Next.js/React/shadcn-ui stack this collection scaffolds \u2014 native semantics over ARIA-patched divs, focus management for Base UI-backed Dialog/Sheet/Select, Next.js App Router route-announcer gotchas, next/image alt text, color-contrast checks for the CSS-variable token system, and prefers-reduced-motion handling for Tailwind's animate-* utilities. Cross-references ts-forms for label/error-announcement patterns and ts-testing-playwright for accessible-role-based locators instead of duplicating either."
+    },
     {
       "name": "ts-api-layer",
       "path": "skills/ts-api-layer",
       "description": "The client/server contract shape decision for a TypeScript app \u2014 tRPC vs REST route handlers (Next.js `app/api/*/route.ts` or a separate Nest.js/Express backend). tRPC gives end-to-end type safety with zero codegen when client and server are both TypeScript in the same monorepo; REST is required the moment a non-TS client, a public API, or a versioned/OpenAPI contract enters the picture. Covers procedure design, Zod input validation, and the error-handling shape for both."
+    },
+    {
+      "name": "ts-audit",
+      "path": "skills/ts-audit",
+      "description": "Code-smell and architecture audit for a React/Next.js/TypeScript project scaffolded by this collection. Produces findings, risk levels, and a fix order \u2014 not implementation code. Every detector traces back to either an anti-pattern already documented in one of this collection's 19 skills (cited by name) or a pattern verified directly against Next.js/React's own docs (cited by URL). Deliberately deferred past v1 launch to avoid shipping a thin, noisy detector set \u2014 this is the systematized version of `ts-review-changes`'s Step 3 checklist, going deeper across the full detector catalog instead of just the 10 highest-signal checks."
     },
     {
       "name": "ts-auth",
