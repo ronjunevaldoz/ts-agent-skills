@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.5.0] — 2026-08-10
+
+### Added
+
+- feat(ts-project-foundation): add multi-feature organization pattern
+
+---
+
 ## [v0.4.3] — 2026-08-10
 
 ### Docs
