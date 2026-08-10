@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.6.3] — 2026-08-10
+
+### Fixed
+
+- fix(ts-new-project): split plan-confirmation into two turns
+
+---
+
 ## [v0.6.2] — 2026-08-10
 
 ### Fixed
