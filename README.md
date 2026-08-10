@@ -13,7 +13,7 @@ is the unifying toolchain here the way Kotlin+Gradle is there.
 
 ## Skills
 
-16 skills covering the TypeScript/Next.js/Node stack. Load the smallest set that
+18 skills covering the TypeScript/Next.js/Node stack. Load the smallest set that
 answers the request. Start with `ts-expert` to get routed to the right skill.
 
 ### Foundation & Architecture Contract
@@ -25,14 +25,16 @@ answers the request. Start with `ts-expert` to get routed to the right skill.
 
 ### Core Infrastructure
 - `ts-api-layer` — tRPC vs REST route handlers decision
-- `ts-orm-database` — Prisma vs Drizzle decision
+- `ts-orm-database` — SQL default, Prisma vs Drizzle decision
+- `ts-mongodb` — document-database alternative to `ts-orm-database`
 - `ts-auth` — Auth.js vs Clerk vs Lucia decision
 - `ts-deploy-vercel` — Vercel deployment, env vars, Edge vs Node runtime
 - `ts-resilience` — retry/backoff, circuit breaker, timeout, rate limiting, idempotency keys, "last seat" contention
+- `ts-background-jobs` — Vercel Cron, QStash, BullMQ/Inngest decision for work that can't run inline
 
 ### Feature Building Blocks
 - `ts-forms` — React Hook Form + Zod
-- `ts-data-fetching` — TanStack Query, the server-state counterpart to `ts-state-management`
+- `ts-data-fetching` — TanStack Query, the server-state counterpart to `ts-state-management`, cursor-based pagination
 
 ### UI System
 - `ts-shadcn-ui` — shadcn/ui component system (Base UI default as of July 2026, Radix still supported)

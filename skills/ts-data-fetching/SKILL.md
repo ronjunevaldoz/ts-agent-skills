@@ -292,6 +292,97 @@ exists (is this modal open, which step of the wizard), it's a client store's job
 
 ---
 
+## Pagination — Cursor-Based vs Offset-Based
+
+**Cursor-based is the right default for any list that scales past a small,
+mostly-static dataset.** Offset pagination (`page`/`limit` or `skip`/`take`) is
+simpler to write but breaks under concurrent writes and degrades as the table
+grows:
+
+- **Concurrent writes shift the page.** If a row is inserted before the current
+  page while a user is paging through, offset-based pagination either skips a
+  row (it shifted into the previous page) or repeats one (it shifted into the
+  next page) — the page boundary is a row *count*, not a stable position.
+- **`OFFSET` gets slower as it grows.** `OFFSET 100000 LIMIT 20` still has to
+  scan and discard 100,000 rows before returning the 20 — there's no index that
+  makes a large offset cheap.
+
+Cursor-based pagination uses a stable, indexed column (`id`, `createdAt`) as a
+"start after this" pointer instead of a row count, so a concurrent insert
+doesn't shift anyone's position and the query stays an indexed range scan
+regardless of how deep the user pages.
+
+**Offset pagination is still fine** for a small, bounded, rarely-changing list —
+an admin settings table with a few hundred rows, where neither the concurrency
+problem nor the performance problem can occur. Cursor pagination isn't
+mandatory everywhere, just for anything that scales.
+
+### `useInfiniteQuery` with a cursor
+
+```tsx
+function usePostsList() {
+  return useInfiniteQuery({
+    queryKey: postKeys.all,
+    queryFn: ({ pageParam }) =>
+      fetch(`/api/posts?cursor=${pageParam ?? ""}&limit=20`).then(
+        (r) => r.json() as Promise<{ items: Post[]; nextCursor: string | null }>,
+      ),
+    initialPageParam: null as string | null,
+    // the API returns the id/createdAt to resume from; null means "no more pages"
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
+}
+
+function PostList() {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = usePostsList();
+
+  return (
+    <>
+      {data?.pages.flatMap((page) => page.items).map((post) => (
+        <PostCard key={post.id} post={post} />
+      ))}
+      {hasNextPage && (
+        <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+          {isFetchingNextPage ? "Loading..." : "Load more"}
+        </button>
+      )}
+    </>
+  );
+}
+```
+
+`data.pages` is an array of page responses in fetch order — flatten it to
+render, don't try to collapse it back into a single query key's cache entry.
+
+### The API/database side
+
+The `nextCursor` above has to come from a cursor-based query, not a `page`
+number. Keep this consistent with whichever ORM `ts-orm-database` set up:
+
+```ts
+// Prisma — cursor + skip: 1 to exclude the cursor row itself
+const posts = await prisma.post.findMany({
+  take: 20,
+  skip: cursor ? 1 : 0,
+  cursor: cursor ? { id: cursor } : undefined,
+  orderBy: { id: "asc" },
+});
+
+// Drizzle — WHERE id > cursor, same indexed-range-scan idea
+const posts = await db
+  .select()
+  .from(postsTable)
+  .where(cursor ? gt(postsTable.id, cursor) : undefined)
+  .orderBy(asc(postsTable.id))
+  .limit(20);
+```
+
+Return the last row's `id` as `nextCursor` (or `null` once fewer than `limit`
+rows come back) so the client's `getNextPageParam` has something to resume
+from.
+
+---
+
 ## Common Anti-Patterns
 
 - **Fetched data in `useState`/Redux/Zustand, with hand-rolled loading/error/
@@ -315,6 +406,11 @@ exists (is this modal open, which step of the wizard), it's a client store's job
 - **Using `useEffect` to sync `useQuery`'s `data` into local `useState`.** This
   creates a second copy of the same data that can go out of sync with the cache —
   read `data` directly from `useQuery` at render time instead.
+- **Offset-based pagination (`OFFSET`/`page` number) on a large or
+  frequently-written table.** Concurrent inserts shift row positions, causing
+  skipped or duplicated results on the next page, and `OFFSET` gets slower as
+  the page number grows since the database still scans every skipped row. Use
+  cursor-based pagination once the table isn't small and static.
 
 ---
 

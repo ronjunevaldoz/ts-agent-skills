@@ -65,7 +65,7 @@ Why:
 
 ---
 
-## The 16 Skills and What They Own
+## The 18 Skills and What They Own
 
 ### Foundation & Architecture Contract
 | Skill | Owns |
@@ -78,11 +78,13 @@ Why:
 | Skill | Owns |
 |---|---|
 | `ts-validation-schema` | Zod schemas as the single source of runtime + compile-time type validation |
-| `ts-orm-database` | Prisma vs Drizzle decision, schema/migration workflow, typed query client |
+| `ts-orm-database` | SQL default, Prisma vs Drizzle decision, schema/migration workflow, connection pooling |
+| `ts-mongodb` | Document-database alternative to `ts-orm-database` — Mongoose vs native driver, change streams, indexing |
 | `ts-api-layer` | tRPC vs REST decision, API contract shape, request/response typing |
 | `ts-auth` | Auth.js vs Clerk vs Lucia decision, session handling, route protection |
 | `ts-deploy-vercel` | Vercel deployment, environment variables, preview deployments, edge vs node runtime |
 | `ts-resilience` | Retry/backoff, circuit breaker, timeout, rate limiting, idempotency keys, limited-resource ("last seat") contention |
+| `ts-background-jobs` | Work that can't run inline in a request — Vercel Cron, QStash, BullMQ/Inngest decision |
 
 ### Feature Building Blocks
 | Skill | Owns |
@@ -123,11 +125,12 @@ ts-ci-github-actions
         |
 ts-validation-schema
         |
-ts-orm-database
+ts-orm-database (or ts-mongodb)
         |
 ts-api-layer
         |
-ts-resilience
+   +----+----+
+ts-resilience   ts-background-jobs
         |
 ts-auth
         |
@@ -154,9 +157,9 @@ API contract has nothing stable to validate against or query.
 2. `ts-nextjs-app-router` — Server/Client Component boundary, routes
 3. `ts-ci-github-actions` — CI pipeline
 4. `ts-validation-schema` — Zod schemas
-5. `ts-orm-database` — Prisma/Drizzle
+5. `ts-orm-database` (or `ts-mongodb` — see its Decision Trees entry below) — schema and queries
 6. `ts-api-layer` — tRPC/REST
-7. `ts-resilience` — retry, circuit breaker, timeout, rate limiting, idempotency keys
+7. `ts-resilience` + `ts-background-jobs` — retry/circuit-breaker/rate-limiting, and offloading long-running work
 8. `ts-auth` — Auth.js/Clerk/Lucia
 9. `ts-state-management` — Redux/Zustand/Context
 10. `ts-forms` + `ts-data-fetching` — form submission and client-side fetching
@@ -182,6 +185,20 @@ Client and server both TypeScript, same repo → load `ts-api-layer` and use its
 decision table (tRPC is the default there). A public API consumed by non-TS clients,
 or a webhook/third-party callback → same skill, REST branch of its table.
 
+**SQL or MongoDB?**
+Default to `ts-orm-database` (SQL/Prisma-Drizzle) — real relationships, transactions,
+joins cover most apps. Only load `ts-mongodb` instead for genuinely document-shaped or
+variable-structure data, or an append-heavy/rarely-joined access pattern (event logs,
+time-series) — check `ts-orm-database`'s own note on `JSONB` columns first, since that
+often covers the flexibility need without a second database technology at all.
+
+**Does this work need to run in the background?**
+Anything that can exceed a serverless function's execution limit (sending a batch of
+emails, processing an upload, a slow third-party call) → load `ts-background-jobs` and
+use its own decision table (Vercel Cron for scheduled, QStash for one-off event-triggered,
+BullMQ/Inngest for complex orchestration). Its retry/idempotency handling is
+`ts-resilience`'s job, not duplicated there.
+
 ---
 
 ## Skill Invocation Map
@@ -195,9 +212,11 @@ or a webhook/third-party callback → same skill, REST branch of its table.
 | "Zod schema", "runtime validation", "parse input" | `ts-validation-schema` |
 | "tRPC vs REST", "API contract", "typed API" | `ts-api-layer` |
 | "Prisma vs Drizzle", "database schema", "migration" | `ts-orm-database` |
+| "MongoDB", "Mongoose", "document database", "change streams" | `ts-mongodb` |
 | "Auth.js", "Clerk", "Lucia", "session", "protect a route" | `ts-auth` |
 | "deploy to production", "Vercel", "preview deployment", "env vars" | `ts-deploy-vercel` |
 | "retry", "circuit breaker", "rate limiting", "idempotency key", "last seat", "timeout" | `ts-resilience` |
+| "background job", "queue", "BullMQ", "Inngest", "QStash", "Vercel Cron" | `ts-background-jobs` |
 | "add a form", "React Hook Form", "form validation UI" | `ts-forms` |
 | "fetch data on the client", "TanStack Query", "cache invalidation" | `ts-data-fetching` |
 | "shadcn/ui", "component library", "theme components" | `ts-shadcn-ui` |

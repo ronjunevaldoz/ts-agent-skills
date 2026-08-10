@@ -147,6 +147,46 @@ user session) doesn't refetch on every navigation.
 
 ---
 
+## Caching Layers — Fetch Cache, Full Route Cache, and ISR
+
+Three distinct caches — don't conflate them:
+
+- **Fetch cache** — Next.js caches `fetch()` calls made in Server Components. Control
+  per-call with `{ cache: 'force-cache' | 'no-store' }` or `{ next: { revalidate: N } }`.
+- **Full route cache** — the rendered HTML/RSC payload for a route with no dynamic data,
+  computed once at build/deploy and served statically on every request.
+- **ISR (Incremental Static Regeneration)** — a route stays statically served but
+  regenerates in the background once its `revalidate` window elapses, so users get a
+  fast (if slightly stale) response while the next version builds.
+
+```tsx
+// Revalidate every hour — content that changes occasionally (blog post, product listing)
+const res = await fetch('https://api.example.com/posts', { next: { revalidate: 3600 } });
+
+// Always fresh — required for user-specific/authenticated data
+const res = await fetch('https://api.example.com/me', { cache: 'no-store' });
+
+// No options — default cached behavior for a fetch in a Server Component
+const res = await fetch('https://api.example.com/posts');
+```
+
+`revalidatePath`/`revalidateTag` (see the `addComment` Server Action above) are the
+on-demand escape hatch — they invalidate the fetch cache and full route cache for a
+path/tag immediately, instead of waiting for a `revalidate` window to expire.
+
+**Why this is the scalability lever:** deployed to Vercel, a statically-rendered or
+ISR'd route is served from Vercel's CDN at the edge. Most traffic never reaches your
+server or database at all — origin is only hit on a cache miss or background
+regeneration, not per-request.
+
+**The gotcha:** a Server Component that reads per-user data (the logged-in user's name,
+a cart) still inherits the *route's* cache under default caching — render it that way
+and Next.js can serve user A's data to user B. Fetch that data with `{ cache: 'no-store' }`,
+or read `cookies()`/`headers()`, which Next.js recognizes as dynamic and automatically
+opts the route out of static caching.
+
+---
+
 ## Common Anti-Patterns
 
 - **`"use client"` on a page component** because one child needs interactivity — push
@@ -160,6 +200,9 @@ user session) doesn't refetch on every navigation.
 - **Calling a Server Action directly from a `useEffect`** instead of a form/button
   interaction — Server Actions are designed around explicit user-triggered mutations,
   not background polling; use a route handler + `fetch` for that instead.
+- **Caching a route or `fetch` call that returns per-user or authenticated data**
+  without opting out — the default cached behavior leaks one user's data to another;
+  use `{ cache: 'no-store' }` or read `cookies()`/`headers()` to force it dynamic.
 
 ---
 

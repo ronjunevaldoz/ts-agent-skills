@@ -46,6 +46,13 @@ picking a version.
 
 ## Recommendation First
 
+**SQL (this skill) by default.** Data with real relationships, a need for transactions
+across multiple writes, or joins/aggregations — most apps. Reach for `ts-mongodb`
+instead only for genuinely document-shaped/variable-structure data or an append-heavy,
+rarely-joined access pattern (event logs, time-series) — and check whether a `JSONB`
+column here gets you that flexibility without a second database technology at all
+before reaching for it. This decision is also in `ts-expert`'s Decision Trees.
+
 **Prisma if the team wants the most mature migration workflow and doesn't mind a
 generate step. Drizzle if the team wants schema-as-TypeScript with no codegen and
 finer control over the generated SQL.**
@@ -189,6 +196,53 @@ which is the point of the "finer control over generated SQL" tradeoff.
 
 ---
 
+## Serverless connection pooling — the most common production bug in this stack
+
+**Why it happens:** every serverless function invocation can open a new database
+connection — under real concurrent traffic that exhausts Postgres's connection limit
+(commonly 20-100 depending on plan), and every request past that limit fails with a
+connection error. This is not a hypothetical; it's the single most commonly hit
+production issue for the Next.js + Prisma/Drizzle + Vercel stack this collection
+targets.
+
+**Fix 1 — singleton client (do this first, it's free):** reuse the client across warm
+invocations instead of constructing one per request. Guard against Next.js dev-mode
+hot-reload creating a new client on every file save:
+
+```ts
+// lib/db.ts
+import { PrismaClient } from "@prisma/client";
+
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+
+export const prisma = globalForPrisma.prisma ?? new PrismaClient();
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+```
+
+Import `prisma` from `lib/db.ts` everywhere — never `new PrismaClient()` inline in a
+route handler. Drizzle needs the same treatment: stash the `drizzle(...)` instance on
+`globalThis` in dev the same way.
+
+**Fix 2 — an external pooler**, once the singleton alone isn't enough (many concurrent
+cold starts, not just warm reuse):
+- **PgBouncer** or **Prisma Accelerate** in front of Postgres — many serverless
+  invocations share a small real connection pool instead of each holding one open.
+- For Prisma against an external pooler, append `?pgbouncer=true&connection_limit=1` to
+  `DATABASE_URL` (or set it via `datasourceUrl`) — this tells Prisma's engine not to
+  manage its own pool on top of PgBouncer's.
+- **Neon** and other modern serverless-Postgres providers ship a built-in HTTP-based
+  pooled connection mode for exactly this — same idea as `ts-resilience`'s
+  `@upstash/ratelimit` running over HTTP instead of raw TCP so it works from the Edge
+  runtime.
+
+**Runtime constraint:** most direct Postgres drivers and Prisma's default engine need
+the **Node.js runtime**, not Edge — see `ts-deploy-vercel`'s Edge vs Node.js Runtime
+section. Don't reach for Edge on a route that opens a DB connection unless you're
+specifically on an HTTP-based driver (e.g. Neon's serverless driver) built for it.
+
+---
+
 ## Common Anti-Patterns
 
 - **N+1 queries** — looping over users and querying posts per-user instead of using
@@ -215,6 +269,9 @@ which is the point of the "finer control over generated SQL" tradeoff.
 - **No unique constraint on a field the app treats as unique** (`email`) — enforce it in
   the schema (`@unique` / `.unique()`), not just in application-level validation, so a
   race condition can't insert a duplicate.
+- **No connection pooling / no singleton client in serverless** — `new PrismaClient()`
+  (or a fresh `drizzle(...)`) constructed per request exhausts Postgres's connection
+  limit under real traffic; see Serverless connection pooling above.
 
 ---
 
