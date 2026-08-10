@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.6.1] — 2026-08-10
+
+### Added
+
+- feat(ts-new-project): wire toHaveScreenshot baseline into build order
+
+---
+
 ## [v0.6.0] — 2026-08-10
 
 ### Added
