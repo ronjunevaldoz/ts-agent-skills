@@ -4,7 +4,7 @@ description: >
   Code-smell and architecture audit for a React/Next.js/TypeScript project
   scaffolded by this collection. Produces findings, risk levels, and a fix
   order — not implementation code. Every detector traces back to either an
-  anti-pattern already documented in one of this collection's 19 skills
+  anti-pattern already documented in one of this collection's 20 skills
   (cited by name) or a pattern verified directly against Next.js/React's own
   docs (cited by URL). Deliberately deferred past v1 launch to avoid shipping
   a thin, noisy detector set — this is the systematized version of
@@ -13,7 +13,7 @@ description: >
 license: Apache-2.0
 metadata:
   author: ts-agent-skills
-  last-updated: '2026-08-10'
+  last-updated: '2026-08-22'
   keywords:
     - audit
     - code review
@@ -45,7 +45,7 @@ Use this skill when you need to:
 - Get findings, severity, and a fix order before touching code — not a rewrite
 - Check whether a specific file (a route, a form, a query hook) has a known
   anti-pattern before or after making a change
-- Decide which of the other 18 skills owns the fix for a given finding
+- Decide which of the other 20 skills owns the fix for a given finding
 
 **Trigger keywords:** audit, code review, architecture review, code smell, review
 this project, check for issues, tech debt, static analysis, what is wrong with
@@ -87,7 +87,7 @@ Why grep first, then read:
 
 1. Read the project's own docs first — `README.md`, `AGENTS.md`, any
    architecture notes — before reporting findings.
-2. Identify which of the 19 skills apply, using `ts-review-changes`'s path
+2. Identify which of the 20 skills apply, using `ts-review-changes`'s path
    table as a starting map.
 3. Grep for each applicable detector's code shape from the catalog below.
 4. Read each match in context — confirm it's a real instance, not a false
@@ -102,7 +102,7 @@ Why grep first, then read:
 
 Each entry cites either the skill that already documents it in full (read that
 skill's Common Anti-Patterns section for the complete why/fix) or an external
-doc for the 5 new detectors. This catalog is deliberately terser than each
+doc for the 7 new detectors. This catalog is deliberately terser than each
 skill's own prose — it exists to be scanned during an audit, not read start to
 finish.
 
@@ -259,6 +259,17 @@ const fullName = firstName + ' ' + lastName;
 | `cn()` reimplemented as plain `clsx()` | LOW | No `tailwind-merge` → conflicting utility classes both land in the DOM |
 | Primitive dependency added manually, not via CLI | LOW | Skips the version pin `components.json` tracks → `npx shadcn add` |
 
+### Accessibility — `ts-accessibility`
+
+| Smell | Sev | Signal → Fix |
+|---|---|---|
+| `<div onClick={...}>` instead of `<button>` | HIGH | No keyboard activation, no focusability, announced as nothing to a screen reader → real `<button>`/`<a href>` |
+| Icon-only button with no `aria-label` | MEDIUM | `<Button size="icon"><X /></Button>` announces as bare "button" → add `aria-label` or visually-hidden text |
+| Custom modal built from a styled `<div>` | MEDIUM | Silently drops focus trapping, Esc-to-close, focus restoration → Base UI's Dialog primitive |
+| Missing or generic `alt` on a content `next/image` | MEDIUM | `alt=""` on a real content image, or `alt="image"` → a real description; `alt=""` only for decorative images |
+| Unconditional `animate-*`/CSS transition | LOW | No `motion-safe:`/`motion-reduce:` gating → users with `prefers-reduced-motion: reduce` still get it |
+| Assuming a dark-mode token swap keeps contrast | MEDIUM | `--primary`/`--primary-foreground` flip is a color swap, not a contrast guarantee → check both themes independently |
+
 ### Missing `next/image` for Content Images — new, verified against Next.js docs
 
 Not owned by any existing skill. Verified against
@@ -270,6 +281,24 @@ Only loading images when they enter the viewport," and "**Size optimization:**
 Automatically serving correctly sized images... using modern image formats
 like WebP." Severity: LOW for a small icon, MEDIUM for a hero/content image
 where CLS and unoptimized payload size are real user-facing costs.
+
+### Dependency Staleness & Vulnerabilities — new, verified against pnpm docs
+
+Not owned by any existing skill. Two separate, real checks — don't conflate them:
+
+**Known-vulnerable dependency (severity from the advisory itself).** Run `pnpm audit`
+— verified against [pnpm.io/cli/audit](https://pnpm.io/cli/audit): checks installed
+packages against the registry's security-advisory database, reporting `low`/
+`moderate`/`high`/`critical`. `--audit-level <severity>` (or `audit.level` in
+`pnpm-workspace.yaml`) filters to advisories at or above a threshold — the flag CI
+should use so a `low` advisory doesn't block every build.
+
+**Outdated package with no upgrade plan (LOW, unless the advisory check above also
+flags it).** Run `pnpm outdated` — verified against
+[pnpm.io/cli/outdated](https://pnpm.io/cli/outdated): lists packages behind their
+latest published version. Being outdated alone is LOW severity — the real finding is
+a major-version gap on a package the project actively depends on, left with no
+tracked upgrade plan, not the mere existence of a newer version.
 
 ### Project Foundation, CI & Deploy — `ts-project-foundation`, `ts-ci-github-actions`, `ts-deploy-vercel`
 
@@ -366,6 +395,7 @@ the full anti-pattern explanation and fix:
 - `ts-state-management` / `ts-data-fetching` — client state and query findings
 - `ts-forms` — client/server validation split findings
 - `ts-shadcn-ui` — design-token and component-source findings
+- `ts-accessibility` — keyboard/focus/contrast/motion findings
 - `ts-project-foundation` / `ts-ci-github-actions` / `ts-deploy-vercel` —
   monorepo, CI, and deployment findings
 - `ts-layout-system` — wireframe-route findings
@@ -380,4 +410,5 @@ the full anti-pattern explanation and fix:
 
 | Date | Change |
 |---|---|
+| 2026-08-22 | Added Accessibility detector section (`ts-accessibility`, 6 rows) — real coverage gap: the skill existed but the audit never checked whether a project follows it. Added Dependency Staleness & Vulnerabilities (new, 2 detectors verified against pnpm's own `audit`/`outdated` docs) — no existing check for known-vulnerable or majorly-outdated packages. Fixed stale skill-count mentions (19/18 → 20) left over from before `ts-accessibility` and this skill itself were added to the roster. |
 | 2026-08-10 | Initial version. |
