@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.14.0] — 2026-08-22
+
+### Added
+
+- feat(ts-audit): add accessibility and dependency-staleness detectors
+
+---
+
 ## [v0.13.1] — 2026-08-10
 
 ### Fixed

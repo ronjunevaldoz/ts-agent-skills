@@ -1,5 +1,5 @@
 {
-  "version": "0.13.1",
+  "version": "0.14.0",
   "skills": [
     {
       "name": "ts-accessibility",
@@ -14,7 +14,7 @@
     {
       "name": "ts-audit",
       "path": "skills/ts-audit",
-      "description": "Code-smell and architecture audit for a React/Next.js/TypeScript project scaffolded by this collection. Produces findings, risk levels, and a fix order \u2014 not implementation code. Every detector traces back to either an anti-pattern already documented in one of this collection's 19 skills (cited by name) or a pattern verified directly against Next.js/React's own docs (cited by URL). Deliberately deferred past v1 launch to avoid shipping a thin, noisy detector set \u2014 this is the systematized version of `ts-review-changes`'s Step 3 checklist, going deeper across the full detector catalog instead of just the 10 highest-signal checks."
+      "description": "Code-smell and architecture audit for a React/Next.js/TypeScript project scaffolded by this collection. Produces findings, risk levels, and a fix order \u2014 not implementation code. Every detector traces back to either an anti-pattern already documented in one of this collection's 20 skills (cited by name) or a pattern verified directly against Next.js/React's own docs (cited by URL). Deliberately deferred past v1 launch to avoid shipping a thin, noisy detector set \u2014 this is the systematized version of `ts-review-changes`'s Step 3 checklist, going deeper across the full detector catalog instead of just the 10 highest-signal checks."
     },
     {
       "name": "ts-auth",
