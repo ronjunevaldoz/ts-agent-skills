@@ -46,11 +46,14 @@ Use this skill when you need to:
 - Check whether a specific file (a route, a form, a query hook) has a known
   anti-pattern before or after making a change
 - Decide which of the other 20 skills owns the fix for a given finding
+- Get a prioritized adoption order for a brownfield project with little or none
+  of this collection's conventions yet — see Adoption Roadmap Mode below
 
 **Trigger keywords:** audit, code review, architecture review, code smell, review
 this project, check for issues, tech debt, static analysis, what is wrong with
 this project, inspect this repo, project health, readiness review, findings,
-risk level, ts-audit.
+risk level, ts-audit, adoption roadmap, where do I start, incremental adoption,
+brownfield project.
 
 **Freshness rule:** the detector catalog cross-references every other skill's own
 Common Anti-Patterns section plus 5 patterns verified against react.dev and
@@ -95,6 +98,12 @@ Why grep first, then read:
 5. Assign severity per the catalog, order findings HIGH → MEDIUM → LOW.
 6. Report findings, evidence, and a recommended fix order — do not
    implement fixes without being asked.
+
+---
+
+## Adoption Roadmap Mode
+
+Full content: `references/adoption-roadmap.md`.
 
 ---
 
@@ -410,5 +419,6 @@ the full anti-pattern explanation and fix:
 
 | Date | Change |
 |---|---|
+| 2026-08-22 | Added Adoption Roadmap Mode (`references/adoption-roadmap.md`) — direct analog to `kmp-audit`'s `--roadmap` mode, missing from the existing-project flow: findings mode answers "what's wrong," nothing answered "what order should I adopt these conventions in" for a brownfield project with none of them yet. 9-row adoption plan (condition/priority/skill/reason/action) plus a state-signal checklist and output template. First `references/` split in this collection — `scan_skill_issues.py` already supported the pattern, just never exercised. |
 | 2026-08-22 | Added Accessibility detector section (`ts-accessibility`, 6 rows) — real coverage gap: the skill existed but the audit never checked whether a project follows it. Added Dependency Staleness & Vulnerabilities (new, 2 detectors verified against pnpm's own `audit`/`outdated` docs) — no existing check for known-vulnerable or majorly-outdated packages. Fixed stale skill-count mentions (19/18 → 20) left over from before `ts-accessibility` and this skill itself were added to the roster. |
 | 2026-08-10 | Initial version. |
