@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.15.0] — 2026-08-22
+
+### Added
+
+- feat(ts-audit): add adoption roadmap mode
+
+---
+
 ## [v0.14.0] — 2026-08-22
 
 ### Added
