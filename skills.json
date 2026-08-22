@@ -1,5 +1,5 @@
 {
-  "version": "0.18.0",
+  "version": "0.19.0",
   "skills": [
     {
       "name": "ts-accessibility",
@@ -50,6 +50,11 @@
       "name": "ts-forms",
       "path": "skills/ts-forms",
       "description": "React Hook Form + Zod resolver integration \u2014 uncontrolled inputs by default, field-level errors, submit gating while pending, and one Zod schema reused for both client validation and Server Action re-validation. The client check is UX; the server check on the same schema is the actual security boundary."
+    },
+    {
+      "name": "ts-impeccable",
+      "path": "skills/ts-impeccable",
+      "description": "Guidance for using Impeccable (impeccable.style), a real third-party Claude Code plugin that detects and removes \"AI slop\" design tells \u2014 purple-to-blue gradients, Inter-for-everything, cards nested in cards, gray text on colored backgrounds, bounce/elastic easing. This skill does NOT reimplement Impeccable's 23 commands or 59 detector rules \u2014 it's a routing/decision guide for when to install it, how it composes with ts-shadcn-ui and ts-nextjs-app-router, and where in the project lifecycle to run it. Defer to Impeccable's own docs (impeccable.style, github.com/pbakaus/impeccable) for command behavior itself."
     },
     {
       "name": "ts-layout-system",

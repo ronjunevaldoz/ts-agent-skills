@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.19.0] — 2026-08-22
+
+### Added
+
+- feat(ts-impeccable): add routing skill for the Impeccable AI-slop design tool
+
+---
+
 ## [v0.18.0] — 2026-08-22
 
 ### Added
