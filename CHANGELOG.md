@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.17.0] — 2026-08-22
+
+### Added
+
+- feat(ts-vite-spa): add Vite SPA skill, cross-reference official shadcn/Vercel skills
+
+---
+
 ## [v0.16.0] — 2026-08-22
 
 ### Added

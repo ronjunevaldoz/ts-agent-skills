@@ -1,5 +1,5 @@
 {
-  "version": "0.16.0",
+  "version": "0.17.0",
   "skills": [
     {
       "name": "ts-accessibility",
@@ -110,6 +110,11 @@
       "name": "ts-validation-schema",
       "path": "skills/ts-validation-schema",
       "description": "Zod as the single runtime-validation backbone for the whole stack \u2014 schema-first types via `z.infer`, `.parse` vs `.safeParse`, and composing schemas with `.extend`/ `.pick`/`.omit`/`.merge`. Covers the three places one schema should be reused instead of reinvented: forms (paired with React Hook Form), API request/response boundaries, and environment variable validation at startup. Foundational \u2014 skip it and the forms, API, and env-config skills each reinvent validation inconsistently."
+    },
+    {
+      "name": "ts-vite-spa",
+      "path": "skills/ts-vite-spa",
+      "description": "Vite + React SPA scaffold as an alternative to ts-nextjs-app-router when the project doesn't need SSR, Server Components, or file-based routing \u2014 a pure client-side app, a dashboard behind auth, an embeddable widget, or a static site with a light backend. Covers the Vite scaffold, routing-library choice (no built-in router), import.meta.env / VITE_ prefix, and static deploy output. Does NOT cover shadcn/ui setup on Vite (see ts-shadcn-ui, which already documents the Vite template) or Tailwind (folded into ts-shadcn-ui)."
     }
   ]
 }
