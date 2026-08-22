@@ -86,7 +86,7 @@ Why:
 
 ---
 
-## The 24 Skills and What They Own
+## The 25 Skills and What They Own
 
 ### Foundation & Architecture Contract
 | Skill | Owns |
@@ -122,6 +122,7 @@ Why:
 | `ts-shadcn-ui` | shadcn/ui component system — install, theme, compose components |
 | `ts-accessibility` | Focus management, keyboard nav, ARIA, contrast, and reduced-motion for the Base UI/shadcn stack |
 | `ts-specialty-ui` | Four opt-in libraries for narrow needs: React Bits (animated polish), assistant-ui (AI chat), driver.js (onboarding tours), Tailark (marketing blocks) — not part of the linear Build Order |
+| `ts-impeccable` | Routing guide for Impeccable (impeccable.style), a real third-party plugin that detects/removes AI-slop design tells — not part of the linear Build Order |
 
 ### Testing & Quality
 | Skill | Owns |
@@ -184,6 +185,8 @@ order), invoked after the build, not a step within it. See its own entry above.
 existing project, invoked when a specific transition is already chosen.
 `ts-specialty-ui` is also not in this graph — four independent opt-in libraries,
 loaded only when their specific narrow need comes up, not a build-order step.
+`ts-impeccable` is likewise not in this graph — a routing guide for a third-party
+plugin, invoked as a design-quality pass, not a build-order step.
 
 Each layer assumes the one above it is already decided. Skipping straight to
 `ts-api-layer` before `ts-validation-schema` and `ts-orm-database` are settled means the
@@ -271,6 +274,7 @@ BullMQ/Inngest for complex orchestration). Its retry/idempotency handling is
 | "shadcn/ui", "component library", "theme components" | `ts-shadcn-ui` |
 | "accessibility", "a11y", "ARIA", "keyboard navigation", "focus management" | `ts-accessibility` |
 | "React Bits", "reactbits", "animated hero", "assistant-ui", "AI chat UI", "Thread component", "driver.js", "onboarding tour", "product tour", "Tailark", "landing page blocks", "marketing blocks" | `ts-specialty-ui` |
+| "Impeccable", "impeccable.style", "AI slop", "looks like AI made this", "generic UI", "purple gradient", "design audit", "design critique", "design polish" | `ts-impeccable` |
 | "unit test", "component test", "Vitest" | `ts-testing-vitest` |
 | "e2e test", "end-to-end test", "Playwright", "browser test" | `ts-testing-playwright` |
 | "which skill", "project plan", "build order", "skill map" | `ts-expert` |
@@ -295,5 +299,6 @@ other skill in `skills/` is a routing destination, not a related skill.
 | 2026-08-10 | Confirmed real bug: a generic "use ts-agent-skills to create this project" request never routed to `/ts-new-project` — the agent implemented ad hoc from scratch (skipped `ts-shadcn-ui`, skipped the plan-confirmation gate even when explicitly asked to analyze first). Added explicit routing instruction + new-project trigger keywords to this skill's description and body. |
 | 2026-08-10 | Added `ts-accessibility` (Build Order step 13, after `ts-shadcn-ui`) and `ts-audit` (Meta, post-hoc review — not in the Build Order) — 21 skills total. |
 | 2026-08-22 | Added `ts-migration` (Meta, 22nd skill) — real gap found reviewing the existing-project flow: `ts-audit`'s Adoption Roadmap Mode gives adoption *order*, nothing gave migration *mechanics* for a specific named transition (Pages→App Router, state-management migration, incremental Zod adoption). Direct analog to `kmp-migration`. Not in the Dependency Graph, same treatment as `ts-audit`. |
+| 2026-08-22 | Added `ts-impeccable` (UI System, 25th skill) — user asked whether impeccable.style could eliminate AI-slop design and requested a skill. Verified real (Apache-2.0, 61,500+ stars, actively maintained, built on Anthropic's own `frontend-design` skill), confirmed no existing skill in this collection referenced it, and confirmed it already ships as a directly-installable Claude Code plugin — scoped this skill as a routing guide (when to install, how it fits the project lifecycle) rather than re-documenting its 23 commands or 59 detector rules. Not in the Dependency Graph, same treatment as `ts-specialty-ui`. |
 | 2026-08-22 | Added `ts-specialty-ui` (UI System, 24th skill) — user asked for research + a skill covering React Bits, assistant-ui, driver.js, and Tailark by name. Each verified via WebSearch against its own docs/npm listing (install command, peer deps, license caveats) before writing. Not in the Dependency Graph/Build Order — four independent opt-in libraries, same treatment as `ts-audit`/`ts-migration`. |
 | 2026-08-22 | Added `ts-vite-spa` (Foundation & Architecture Contract, 23rd skill) — real gap found researching Vite/Next.js/Tailwind/shadcn coverage: every "vite" keyword hit in the repo was actually a "Vitest" substring match, zero real Vite-the-framework coverage existed. Verified against vite.dev's own docs and shadcn/ui's own Vite install guide. Slotted as an `(or ts-vite-spa)` alternative to `ts-nextjs-app-router` in the Dependency Graph and Build Order, same pattern as `ts-mongodb`'s relationship to `ts-orm-database`. |

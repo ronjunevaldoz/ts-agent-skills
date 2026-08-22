@@ -11,7 +11,7 @@ description: >
 license: Apache-2.0
 metadata:
   author: ts-agent-skills
-  last-updated: '2026-08-08'
+  last-updated: '2026-08-22'
   keywords:
     - shadcn/ui
     - Base UI
@@ -322,6 +322,8 @@ definition above works in both themes without a single `dark:` variant — toggl
 - `ts-nextjs-app-router` — Server/Client Component boundary for interactive shadcn/ui
   components (most need `"use client"`)
 - `ts-forms` — React Hook Form + Zod paired with shadcn/ui form components
+- `ts-impeccable` — design-quality pass on top of whatever's built here; catches
+  generic/AI-slop tells this skill's own component defaults don't police
 - `ts-expert` — routing and build order for the full skill set
 
 ---
@@ -330,5 +332,6 @@ definition above works in both themes without a single `dark:` variant — toggl
 
 | Date | Change |
 |---|---|
+| 2026-08-22 | Added a Vite-template acknowledgment (`-t vite`, `components.json` without `rsc: true`, points at `src/index.css`) plus a cross-reference to the official shadcn-ui/ui `skills/shadcn/cli.md` for full CLI/template coverage this skill doesn't re-derive. Also cross-referenced the new `ts-impeccable` skill (design-quality pass on top of whatever's built here) in Related Skills. Missed bumping this changelog/last-updated when the Vite paragraph first landed — backfilled here. |
 | 2026-08-08 | Initial version. |
 | 2026-08-10 | Fixed a real, live-verified drift: `init`'s CLI shape changed from a simple base-color prompt + `"new-york"`/`"default"` style to named presets (`nova`/`vega`/`maia`/etc.) and a three-way primitive choice (`base`/`radix`/`aria`, "aria" is new). Found by actually running `npx shadcn@latest init` end-to-end while live-testing `/ts-new-project`'s full pipeline — this skill's documented `components.json` output no longer matched reality. |
