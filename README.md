@@ -42,6 +42,7 @@ this routing automatic every session, not dependent on keyword matching.
 3. **Verify a change** → `/ts-verify`
 4. **Review a diff** → `/ts-review-changes`
 5. **Audit an existing project** → load `ts-audit`
+6. **Migrate a specific thing** (Pages→App Router, state library, incremental Zod) → load `ts-migration`
 
 **Start here:** not sure which skill to use? Load `ts-expert` — it routes you to
 the smallest relevant skill set.
@@ -63,7 +64,7 @@ software engineer.
 
 ## Skills
 
-21 skills covering the TypeScript/Next.js/Node stack. Load the smallest set that
+22 skills covering the TypeScript/Next.js/Node stack. Load the smallest set that
 answers the request. Start with `ts-expert` to get routed to the right skill.
 
 ### Foundation & Architecture Contract
@@ -98,6 +99,7 @@ answers the request. Start with `ts-expert` to get routed to the right skill.
 ### Meta
 - `ts-expert` — routing, dependency order, decision trees for the full skill set
 - `ts-audit` — post-hoc code-smell/architecture audit: findings, severity, fix order
+- `ts-migration` — named migration mechanics: Pages→App Router, state-management migration, incremental Zod adoption
 
 ---
 

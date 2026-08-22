@@ -16,7 +16,7 @@ description: >
 license: Apache-2.0
 metadata:
   author: ts-agent-skills
-  last-updated: '2026-08-10'
+  last-updated: '2026-08-22'
   keywords:
     - routing
     - expert
@@ -86,7 +86,7 @@ Why:
 
 ---
 
-## The 21 Skills and What They Own
+## The 22 Skills and What They Own
 
 ### Foundation & Architecture Contract
 | Skill | Owns |
@@ -132,6 +132,7 @@ Why:
 |---|---|
 | `ts-expert` | This skill — routing, dependency graph, decision trees, build order |
 | `ts-audit` | Post-hoc code-smell/architecture audit — findings + severity + fix order, not part of the linear Build Order |
+| `ts-migration` | Named migration mechanics (Pages→App Router, state-management migration, incremental Zod adoption) — not part of the linear Build Order, not the same as `ts-audit`'s adoption-order roadmap |
 
 ---
 
@@ -177,6 +178,8 @@ ts-deploy-vercel
 
 `ts-audit` is not in this graph — it's a post-hoc review skill (findings + fix
 order), invoked after the build, not a step within it. See its own entry above.
+`ts-migration` is likewise not in this graph — named migration mechanics for an
+existing project, invoked when a specific transition is already chosen.
 
 Each layer assumes the one above it is already decided. Skipping straight to
 `ts-api-layer` before `ts-validation-schema` and `ts-orm-database` are settled means the
@@ -259,6 +262,7 @@ BullMQ/Inngest for complex orchestration). Its retry/idempotency handling is
 | "e2e test", "end-to-end test", "Playwright", "browser test" | `ts-testing-playwright` |
 | "which skill", "project plan", "build order", "skill map" | `ts-expert` |
 | "audit", "code review", "code smell", "review this project", "tech debt" | `ts-audit` |
+| "migration", "Pages Router to App Router", "pages to app directory", "migrate off Context", "Context to Zustand", "incremental Zod", "add validation to existing API", "brownfield", "migrate without breaking" | `ts-migration` |
 
 ---
 
@@ -277,3 +281,4 @@ other skill in `skills/` is a routing destination, not a related skill.
 | 2026-08-10 | Added `ts-layout-system` (19th skill) — low-fi wireframes, slotted into the Build Order right after `ts-nextjs-app-router`. |
 | 2026-08-10 | Confirmed real bug: a generic "use ts-agent-skills to create this project" request never routed to `/ts-new-project` — the agent implemented ad hoc from scratch (skipped `ts-shadcn-ui`, skipped the plan-confirmation gate even when explicitly asked to analyze first). Added explicit routing instruction + new-project trigger keywords to this skill's description and body. |
 | 2026-08-10 | Added `ts-accessibility` (Build Order step 13, after `ts-shadcn-ui`) and `ts-audit` (Meta, post-hoc review — not in the Build Order) — 21 skills total. |
+| 2026-08-22 | Added `ts-migration` (Meta, 22nd skill) — real gap found reviewing the existing-project flow: `ts-audit`'s Adoption Roadmap Mode gives adoption *order*, nothing gave migration *mechanics* for a specific named transition (Pages→App Router, state-management migration, incremental Zod adoption). Direct analog to `kmp-migration`. Not in the Dependency Graph, same treatment as `ts-audit`. |
