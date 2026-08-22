@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.18.0] — 2026-08-22
+
+### Added
+
+- feat(ts-specialty-ui): add skill for React Bits, assistant-ui, driver.js, Tailark
+
+---
+
 ## [v0.17.0] — 2026-08-22
 
 ### Added

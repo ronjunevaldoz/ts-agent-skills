@@ -1,5 +1,5 @@
 {
-  "version": "0.17.0",
+  "version": "0.18.0",
   "skills": [
     {
       "name": "ts-accessibility",
@@ -90,6 +90,11 @@
       "name": "ts-shadcn-ui",
       "path": "skills/ts-shadcn-ui",
       "description": "shadcn/ui component system, with Tailwind CSS as the underlying styling layer (not a separate skill). shadcn/ui isn't an npm package \u2014 the CLI copies component source into your own codebase, so you own and edit it directly. As of July 2026 shadcn/ui defaults new projects to Base UI (not Radix) as the headless primitive layer; Radix isn't deprecated and is still fully supported as an explicit choice, but Base UI \u2014 built by the same team, with a render-props API instead of `asChild` and more primitives (Combobox, Autocomplete, Number Field) \u2014 is now the default."
+    },
+    {
+      "name": "ts-specialty-ui",
+      "path": "skills/ts-specialty-ui",
+      "description": "Decision guide for four narrow, optional UI libraries that solve one specific problem outside `ts-shadcn-ui`'s core component system: React Bits (animated/ decorative polish), assistant-ui (AI chat interface primitives), driver.js (onboarding tours and feature spotlights), and Tailark (prebuilt marketing/ landing-page blocks via the shadcn registry). Each is opt-in per-project, not part of the standard build order \u2014 load this skill only when one of these four specific needs comes up. Does NOT replace ts-shadcn-ui for core app components, or ts-nextjs-app-router for routing/rendering architecture."
     },
     {
       "name": "ts-state-management",
