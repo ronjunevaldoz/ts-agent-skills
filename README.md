@@ -64,7 +64,7 @@ software engineer.
 
 ## Skills
 
-23 skills covering the TypeScript/Next.js/Node stack. Load the smallest set that
+24 skills covering the TypeScript/Next.js/Node stack. Load the smallest set that
 answers the request. Start with `ts-expert` to get routed to the right skill.
 
 ### Foundation & Architecture Contract
@@ -92,6 +92,7 @@ answers the request. Start with `ts-expert` to get routed to the right skill.
 ### UI System
 - `ts-shadcn-ui` — shadcn/ui component system (Base UI default as of July 2026, Radix still supported)
 - `ts-accessibility` — focus management, keyboard nav, ARIA, contrast, reduced motion for the Base UI/shadcn stack
+- `ts-specialty-ui` — React Bits, assistant-ui, driver.js, Tailark: four opt-in libraries for animation, AI chat, tours, and marketing blocks
 
 ### Testing & Quality
 - `ts-testing-vitest` — Vitest + React Testing Library, unit/component tests
