@@ -1,5 +1,5 @@
 {
-  "version": "0.15.0",
+  "version": "0.16.0",
   "skills": [
     {
       "name": "ts-accessibility",
@@ -55,6 +55,11 @@
       "name": "ts-layout-system",
       "path": "skills/ts-layout-system",
       "description": "Drafts low-fidelity screen wireframes for a Next.js project before real implementation \u2014 gray-box JSX, no real styling, viewable live via the dev server instead of an ASCII sketch. Creates docs/layout-system/ (component table + region notes per screen) plus a dev-only wireframe route under app/(dev)/wireframes/ that never ships to production. Settles where things go before ts-shadcn-ui settles what they look like."
+    },
+    {
+      "name": "ts-migration",
+      "path": "skills/ts-migration",
+      "description": "Incremental adoption guide for teams moving an existing React/Next.js project toward this collection's conventions. Covers named migration paths \u2014 Pages Router to App Router, prop-drilling/Context to a real state-management library, an untyped API to incremental Zod validation \u2014 and how to migrate without breaking a live app. Does NOT cover which order to adopt conventions in for a project with none yet \u2014 see ts-audit's Adoption Roadmap Mode for that; this skill is migration mechanics for a specific named transition."
     },
     {
       "name": "ts-mongodb",

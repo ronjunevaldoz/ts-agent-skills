@@ -2,6 +2,14 @@
 
 All notable changes to ts-agent-skills are documented here.
 
+## [v0.16.0] — 2026-08-22
+
+### Added
+
+- feat(ts-migration): add named migration mechanics skill
+
+---
+
 ## [v0.15.0] — 2026-08-22
 
 ### Added
