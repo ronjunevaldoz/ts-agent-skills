@@ -86,13 +86,14 @@ Why:
 
 ---
 
-## The 22 Skills and What They Own
+## The 23 Skills and What They Own
 
 ### Foundation & Architecture Contract
 | Skill | Owns |
 |---|---|
 | `ts-project-foundation` | Monorepo layout, tsconfig strict-mode baseline, ESLint flat config, pnpm workspaces + Turborepo, package boundary rules |
 | `ts-nextjs-app-router` | Server vs Client Component boundary, layouts and route groups, Server Actions, middleware |
+| `ts-vite-spa` | Vite + React SPA alternative to `ts-nextjs-app-router` — no SSR/Server Components, routing-library choice, `VITE_` env vars, static deploy |
 | `ts-layout-system` | Low-fidelity screen wireframes (dev-only routes), drafted before real components |
 | `ts-ci-github-actions` | CI pipeline — lint, typecheck, test, build, Turborepo remote caching |
 
@@ -144,7 +145,7 @@ features before UI before testing/deploy:
 ```
 ts-project-foundation
         |
-ts-nextjs-app-router
+ts-nextjs-app-router (or ts-vite-spa)
         |
 ts-layout-system
         |
@@ -188,7 +189,8 @@ API contract has nothing stable to validate against or query.
 ## Build Order for a New Project
 
 1. `ts-project-foundation` — monorepo layout, tsconfig, ESLint
-2. `ts-nextjs-app-router` — Server/Client Component boundary, routes
+2. `ts-nextjs-app-router` (or `ts-vite-spa` — see its own Recommendation First for when to
+   prefer a plain SPA over SSR) — Server/Client Component boundary, routes
 3. `ts-layout-system` — low-fi wireframes per MVP screen, before real components
 4. `ts-ci-github-actions` — CI pipeline
 5. `ts-validation-schema` — Zod schemas
@@ -228,6 +230,12 @@ variable-structure data, or an append-heavy/rarely-joined access pattern (event 
 time-series) — check `ts-orm-database`'s own note on `JSONB` columns first, since that
 often covers the flexibility need without a second database technology at all.
 
+**Next.js or Vite?**
+Default to `ts-nextjs-app-router` — SSR, streaming, and file-based routing cover most
+apps. Load `ts-vite-spa` instead only when the project genuinely doesn't need SSR/SEO
+(a dashboard behind auth, an embeddable widget, a browser extension popup) — check its
+own Recommendation First before switching just because Next.js "feels heavy."
+
 **Does this work need to run in the background?**
 Anything that can exceed a serverless function's execution limit (sending a batch of
 emails, processing an upload, a slow third-party call) → load `ts-background-jobs` and
@@ -243,6 +251,7 @@ BullMQ/Inngest for complex orchestration). Its retry/idempotency handling is
 |---|---|
 | "set up a monorepo", "tsconfig", "pnpm workspace", "package boundary" | `ts-project-foundation` |
 | "Server Component", "Client Component", "use client", "Server Action", "route group" | `ts-nextjs-app-router` |
+| "Vite", "Vite SPA", "vite.config.ts", "create vite", "React Router", "TanStack Router", "import.meta.env", "VITE_ prefix", "no SSR", "not Next.js" | `ts-vite-spa` |
 | "wireframe", "mock UI", "low-fi mockup", "screen layout", "sketch a screen" | `ts-layout-system` |
 | "CI pipeline", "GitHub Actions", "Turborepo caching in CI" | `ts-ci-github-actions` |
 | "Redux vs Zustand", "Context state", "client state", "global state" | `ts-state-management` |
@@ -282,3 +291,4 @@ other skill in `skills/` is a routing destination, not a related skill.
 | 2026-08-10 | Confirmed real bug: a generic "use ts-agent-skills to create this project" request never routed to `/ts-new-project` — the agent implemented ad hoc from scratch (skipped `ts-shadcn-ui`, skipped the plan-confirmation gate even when explicitly asked to analyze first). Added explicit routing instruction + new-project trigger keywords to this skill's description and body. |
 | 2026-08-10 | Added `ts-accessibility` (Build Order step 13, after `ts-shadcn-ui`) and `ts-audit` (Meta, post-hoc review — not in the Build Order) — 21 skills total. |
 | 2026-08-22 | Added `ts-migration` (Meta, 22nd skill) — real gap found reviewing the existing-project flow: `ts-audit`'s Adoption Roadmap Mode gives adoption *order*, nothing gave migration *mechanics* for a specific named transition (Pages→App Router, state-management migration, incremental Zod adoption). Direct analog to `kmp-migration`. Not in the Dependency Graph, same treatment as `ts-audit`. |
+| 2026-08-22 | Added `ts-vite-spa` (Foundation & Architecture Contract, 23rd skill) — real gap found researching Vite/Next.js/Tailwind/shadcn coverage: every "vite" keyword hit in the repo was actually a "Vitest" substring match, zero real Vite-the-framework coverage existed. Verified against vite.dev's own docs and shadcn/ui's own Vite install guide. Slotted as an `(or ts-vite-spa)` alternative to `ts-nextjs-app-router` in the Dependency Graph and Build Order, same pattern as `ts-mongodb`'s relationship to `ts-orm-database`. |

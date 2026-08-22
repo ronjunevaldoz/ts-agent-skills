@@ -64,12 +64,13 @@ software engineer.
 
 ## Skills
 
-22 skills covering the TypeScript/Next.js/Node stack. Load the smallest set that
+23 skills covering the TypeScript/Next.js/Node stack. Load the smallest set that
 answers the request. Start with `ts-expert` to get routed to the right skill.
 
 ### Foundation & Architecture Contract
 - `ts-project-foundation` — tsconfig, ESLint/Prettier, pnpm workspaces + Turborepo, package boundaries
 - `ts-nextjs-app-router` — Server vs Client Component boundary, layouts, Server Actions, middleware
+- `ts-vite-spa` — Vite + React SPA alternative when the project doesn't need SSR
 - `ts-layout-system` — low-fi screen wireframes (dev-only routes), drafted before real components
 - `ts-ci-github-actions` — CI pipeline: lint, typecheck, test, build, Turborepo caching
 - `ts-state-management` — Redux Toolkit vs Zustand vs Context decision

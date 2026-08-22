@@ -70,6 +70,19 @@ requires it. Don't mix the two within one project — see Anti-Patterns.
 
 ## CLI Setup and components.json
 
+**This skill assumes the `next` template — the CLI supports others.** `-t` accepts
+`next`, `vite`, `react-router`, `start`, and `astro`; the CLI detects the framework
+automatically in most cases, `-t` is only needed to override. On `vite`, the
+generated `components.json` omits `"rsc": true` (no Server Components) and points
+`tailwind.css` at `src/index.css`, not `app/globals.css` — everything else below
+(preset, primitive layer, theming) is identical across templates. For anything
+Vite-specific beyond `components.json` shape (project scaffold, path aliases in
+`vite.config.ts`, dev server), see `ts-vite-spa` — this skill only covers the
+shadcn/ui layer. Full CLI reference, including every template and flag: the
+official [shadcn-ui/ui `skills/shadcn/cli.md`](https://github.com/shadcn-ui/ui/blob/main/skills/shadcn/cli.md),
+maintained by the shadcn/ui team directly — defer to it over guessing at flags
+this file doesn't cover.
+
 ```bash
 npx shadcn@latest init -t next -b base -p nova
 ```

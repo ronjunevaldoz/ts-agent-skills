@@ -225,6 +225,13 @@ deployment, not three.
 - `ts-ci-github-actions` — Turborepo remote caching and CI checks that run before a
   deploy
 - `ts-expert` — routing and build order for the full skill set
+- [Vercel Labs' official `deploy-to-vercel` skill](https://github.com/vercel-labs/agent-skills) —
+  the deploy-*action* workflow (CLI usage, team/scope selection, `.vercel/project.json`
+  link-state detection, preview-vs-production decision) maintained by Vercel directly;
+  complementary to this skill's project-*configuration* scope (env vars, Edge vs Node
+  runtime, `vercel.json`, preview env scoping across a Turborepo monorepo) — defer to it
+  for the actual deploy mechanics, use this skill for how the project is configured
+  going in
 
 ---
 
@@ -232,4 +239,5 @@ deployment, not three.
 
 | Date | Change |
 |---|---|
+| 2026-08-22 | Added cross-reference to Vercel Labs' official `deploy-to-vercel` skill after reviewing vercel-labs/agent-skills — confirmed complementary (deploy-action workflow vs. this skill's project-configuration scope), no redundancy. |
 | 2026-08-08 | Initial version. |
